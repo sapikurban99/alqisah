@@ -1,26 +1,202 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #101726;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-courier);
+  --font-mono: var(--font-courier);
+  --font-pixel: var(--font-pixel);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-courier), "Courier Prime", "Courier New", Courier, monospace;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+/* Font Pixel Helper */
+.font-pixel {
+  font-family: var(--font-pixel), "Courier New", monospace;
+}
+
+/* Fluid pixel typography — scales with viewport width, mobile-first 320-480px */
+.text-pixel-eyebrow {
+  font-family: var(--font-pixel), monospace;
+  font-size: clamp(0.55rem, 2.6vw, 0.75rem);
+}
+.text-pixel-title {
+  font-family: var(--font-pixel), monospace;
+  font-size: clamp(1.25rem, 7vw, 1.9rem);
+  line-height: 1.25;
+}
+.text-pixel-small {
+  font-family: var(--font-pixel), monospace;
+  font-size: clamp(0.55rem, 2.5vw, 0.68rem);
+}
+.text-pixel-btn {
+  font-family: var(--font-pixel), monospace;
+  font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+}
+
+/* Pixel art rendering */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Custom retro scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: #f08080;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cc1f2a;
+}
+
+/* Safe area padding utilities */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+/* Authentic Y2K Retro Pixel Borders & Buttons */
+.pixel-box {
+  border: 3px solid #1e3a8a;
+  box-shadow: 3px 3px 0px #1e3a8a;
+}
+
+.pixel-box-pink {
+  border: 3px solid #f08080;
+  box-shadow: 3px 3px 0px #f08080;
+}
+
+.pixel-box-amber {
+  border: 3px solid #d97706;
+  box-shadow: 3px 3px 0px #92400e;
+}
+
+.pixel-box-emerald {
+  border: 3px solid #059669;
+  box-shadow: 3px 3px 0px #065f46;
+}
+
+/* Pixel Buttons with 3D click depress */
+.pixel-btn {
+  border: 3px solid #1e3a8a;
+  box-shadow: 3px 3px 0px #1e3a8a;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #1e3a8a;
+}
+
+.pixel-btn-pink {
+  border: 3px solid #f08080;
+  box-shadow: 3px 3px 0px #f08080;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.pixel-btn-pink:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #f08080;
+}
+
+.pixel-btn-red {
+  border: 3px solid #cc1f2a;
+  box-shadow: 3px 3px 0px #7a1017;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.pixel-btn-red:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #7a1017;
+}
+
+.pixel-btn-amber {
+  border: 3px solid #d97706;
+  box-shadow: 3px 3px 0px #92400e;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.pixel-btn-amber:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #92400e;
+}
+
+.pixel-btn-emerald {
+  border: 3px solid #059669;
+  box-shadow: 3px 3px 0px #065f46;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.pixel-btn-emerald:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #065f46;
+}
+
+/* Pixel Input */
+.pixel-input {
+  border: 3px solid #1e3a8a;
+  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  font-family: var(--font-pixel), monospace;
+}
+
+.pixel-input:focus {
+  outline: none;
+  border-color: #f08080;
+}
+
+/* Heart Pulse Animation */
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.heart-pulse {
+  animation: heartPulse 1.2s ease-in-out infinite;
+}
+
+/* Retro Blink */
+@keyframes retroBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.retro-blink {
+  animation: retroBlink 1.4s ease-in-out infinite;
 }
