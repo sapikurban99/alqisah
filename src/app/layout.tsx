@@ -1,23 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Courier_Prime, Press_Start_2P } from "next/font/google";
+import { Archivo_Black, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const courierPrime = Courier_Prime({
-  variable: "--font-courier",
+const display = Archivo_Black({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: "400",
 });
 
-const pixelFont = Press_Start_2P({
-  weight: "400",
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
   subsets: ["latin"],
-  variable: "--font-pixel",
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "The Grand Prix to Forever - Aldi & Qisty | #AlQiSAH",
+  title: "Aldi & Qisti — Grand Prix to Forever | #AlQiSAH",
   description:
-    "Undangan Pernikahan & 16-Bit Retro Arcade Racing Game - Aldi & Qisty",
+    "Undangan Pernikahan Neo-Brutalist F1 — Aldi & Qisti, Minggu 8 November 2026, Hotel Indies Style Bandung",
 };
 
 export const viewport: Viewport = {
@@ -36,9 +36,9 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${courierPrime.variable} ${pixelFont.variable} h-full antialiased`}
+      className={`${display.variable} ${grotesk.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#1a1a2e] font-mono text-slate-800 selection:bg-rose-500 selection:text-white">
+      <body className="min-h-full bg-[#111111] font-sans text-[#111111] selection:bg-[#FFD500] selection:text-black">
         {children}
       </body>
     </html>

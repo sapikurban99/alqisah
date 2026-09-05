@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #101726;
-  --foreground: #f8fafc;
+  --background: #111111;
+  --foreground: #111111;
+  --paper: #fff8ec;
+  --ink: #111111;
+  --red: #e10600;
+  --yellow: #ffd500;
+  --blue: #2b4eff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-courier);
-  --font-mono: var(--font-courier);
-  --font-pixel: var(--font-pixel);
+  --font-sans: var(--font-grotesk);
+  --font-mono: var(--font-grotesk);
+  --font-display: var(--font-display);
 }
 
 * {
@@ -25,7 +30,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-courier), "Courier Prime", "Courier New", Courier, monospace;
+  font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
   touch-action: manipulation;
 }
@@ -35,168 +40,176 @@ html {
   height: 100%;
 }
 
-/* Font Pixel Helper */
-.font-pixel {
-  font-family: var(--font-pixel), "Courier New", monospace;
+/* Display font helper (Archivo Black) */
+.font-display {
+  font-family: var(--font-display), "Arial Black", sans-serif;
 }
 
-/* Fluid pixel typography — scales with viewport width, mobile-first 320-480px */
-.text-pixel-eyebrow {
-  font-family: var(--font-pixel), monospace;
-  font-size: clamp(0.55rem, 2.6vw, 0.75rem);
+/* Fluid display type — oversized hero names */
+.text-hero {
+  font-family: var(--font-display), "Arial Black", sans-serif;
+  font-size: clamp(2.4rem, 13vw, 3.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
 }
-.text-pixel-title {
-  font-family: var(--font-pixel), monospace;
-  font-size: clamp(1.25rem, 7vw, 1.9rem);
-  line-height: 1.25;
+.text-section-title {
+  font-family: var(--font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.4rem, 7vw, 2rem);
+  line-height: 1;
 }
-.text-pixel-small {
-  font-family: var(--font-pixel), monospace;
-  font-size: clamp(0.55rem, 2.5vw, 0.68rem);
-}
-.text-pixel-btn {
-  font-family: var(--font-pixel), monospace;
-  font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+.text-card-name {
+  font-family: var(--font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.05rem, 5.4vw, 1.5rem);
+  line-height: 1.1;
 }
 
-/* Pixel art rendering */
+/* Pixel-art sprite rendering (game canvas + car PNGs only) */
 .pixelated {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
 }
 
-/* Custom retro scrollbar */
+/* Brutalist scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.2);
+  background: #fff8ec;
+  border-left: 2px solid #111;
 }
 ::-webkit-scrollbar-thumb {
-  background: #f08080;
+  background: #111;
   border-radius: 0;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #cc1f2a;
 }
 
 /* Safe area padding utilities */
 .pb-safe {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
-
 .pt-safe {
   padding-top: max(0.5rem, env(safe-area-inset-top));
 }
 
-/* Authentic Y2K Retro Pixel Borders & Buttons */
-.pixel-box {
-  border: 3px solid #1e3a8a;
-  box-shadow: 3px 3px 0px #1e3a8a;
-}
+/* ---- Neo-Brutalist design system ---- */
 
-.pixel-box-pink {
-  border: 3px solid #f08080;
-  box-shadow: 3px 3px 0px #f08080;
-}
-
-.pixel-box-amber {
-  border: 3px solid #d97706;
-  box-shadow: 3px 3px 0px #92400e;
-}
-
-.pixel-box-emerald {
-  border: 3px solid #059669;
-  box-shadow: 3px 3px 0px #065f46;
-}
-
-/* Pixel Buttons with 3D click depress */
-.pixel-btn {
-  border: 3px solid #1e3a8a;
-  box-shadow: 3px 3px 0px #1e3a8a;
-  transition: transform 0.08s, box-shadow 0.08s;
-}
-
-.pixel-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #1e3a8a;
-}
-
-.pixel-btn-pink {
-  border: 3px solid #f08080;
-  box-shadow: 3px 3px 0px #f08080;
-  transition: transform 0.08s, box-shadow 0.08s;
-}
-
-.pixel-btn-pink:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #f08080;
-}
-
-.pixel-btn-red {
-  border: 3px solid #cc1f2a;
-  box-shadow: 3px 3px 0px #7a1017;
-  transition: transform 0.08s, box-shadow 0.08s;
-}
-
-.pixel-btn-red:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #7a1017;
-}
-
-.pixel-btn-amber {
-  border: 3px solid #d97706;
-  box-shadow: 3px 3px 0px #92400e;
-  transition: transform 0.08s, box-shadow 0.08s;
-}
-
-.pixel-btn-amber:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #92400e;
-}
-
-.pixel-btn-emerald {
-  border: 3px solid #059669;
-  box-shadow: 3px 3px 0px #065f46;
-  transition: transform 0.08s, box-shadow 0.08s;
-}
-
-.pixel-btn-emerald:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #065f46;
-}
-
-/* Pixel Input */
-.pixel-input {
-  border: 3px solid #1e3a8a;
-  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.15);
+/* Cards: thick black border + hard offset shadow, NO rounding */
+.brut-card {
   background: #ffffff;
-  font-family: var(--font-pixel), monospace;
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+}
+.brut-card-red {
+  background: var(--red);
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+  color: #fff;
+}
+.brut-card-yellow {
+  background: var(--yellow);
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+  color: #111;
+}
+.brut-card-black {
+  background: #111;
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.25);
+  color: #fff;
+}
+.brut-card-blue {
+  background: var(--blue);
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+  color: #fff;
 }
 
-.pixel-input:focus {
+/* Buttons: square, mechanical press effect */
+.brut-btn {
+  background: #fff;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 #111;
+  transition: transform 0.08s, box-shadow 0.08s;
+  font-weight: 700;
+}
+.brut-btn:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 #111;
+}
+.brut-btn-red {
+  background: var(--red);
+  color: #fff;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 #111;
+  transition: transform 0.08s, box-shadow 0.08s;
+  font-weight: 700;
+}
+.brut-btn-red:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 #111;
+}
+.brut-btn-yellow {
+  background: var(--yellow);
+  color: #111;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 #111;
+  transition: transform 0.08s, box-shadow 0.08s;
+  font-weight: 700;
+}
+.brut-btn-yellow:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 #111;
+}
+.brut-btn-black {
+  background: #111;
+  color: #fff;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 rgba(17, 17, 17, 0.3);
+  transition: transform 0.08s, box-shadow 0.08s;
+  font-weight: 700;
+}
+.brut-btn-black:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 rgba(17, 17, 17, 0.3);
+}
+
+/* Form fields: square, heavy border */
+.brut-input {
+  background: #fff;
+  border: 3px solid #111;
+  box-shadow: inset 3px 3px 0 rgba(17, 17, 17, 0.12);
+  border-radius: 0;
+  font-weight: 500;
+}
+.brut-input:focus {
   outline: none;
-  border-color: #f08080;
+  border-color: var(--red);
+  box-shadow: 4px 4px 0 #111;
+}
+.brut-input::placeholder {
+  color: #757575;
 }
 
-/* Heart Pulse Animation */
-@keyframes heartPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+/* F1 checkerboard strip */
+.checker {
+  background: repeating-conic-gradient(#111 0% 25%, #fff 0% 50%) 0 0 / 20px
+    20px;
+}
+.checker-sm {
+  background: repeating-conic-gradient(#111 0% 25%, #fff 0% 50%) 0 0 / 12px
+    12px;
 }
 
-.heart-pulse {
-  animation: heartPulse 1.2s ease-in-out infinite;
+/* Marquee ticker */
+@keyframes brut-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
-
-/* Retro Blink */
-@keyframes retroBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-
-.retro-blink {
-  animation: retroBlink 1.4s ease-in-out infinite;
+.brut-marquee {
+  animation: brut-marquee 14s linear infinite;
 }

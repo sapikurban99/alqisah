@@ -69,9 +69,9 @@ export default function WeddingInvitation() {
   };
 
   return (
-    <div className="w-full h-[100dvh] flex items-center justify-center bg-[#101726] overflow-hidden">
+    <div className="w-full h-[100dvh] flex items-center justify-center bg-[#111111] overflow-hidden">
       {/* Main Responsive Device Container */}
-      <div className="relative w-full max-w-[400px] h-full sm:h-[100dvh] sm:max-h-[860px] flex flex-col bg-white overflow-hidden sm:rounded-2xl sm:border-4 sm:border-[#1e3a8a] sm:shadow-[6px_6px_0px_#1e3a8a]">
+      <div className="relative w-full max-w-[400px] h-full sm:h-[100dvh] sm:max-h-[860px] flex flex-col bg-[#FFF8EC] overflow-hidden sm:border-4 sm:border-black">
         {/* GAME MODE */}
         {mode === "game" && (
           <div className="relative w-full h-full flex flex-col">
@@ -82,7 +82,7 @@ export default function WeddingInvitation() {
                   audioManager.playClick();
                   setMode("invitation");
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#87ceeb] text-[#1e3a8a] pixel-btn text-[9px] cursor-pointer font-pixel"
+                className="flex items-center gap-1.5 px-3 py-2 bg-white text-black brut-btn text-[10px] font-bold cursor-pointer"
               >
                 <span>←</span>
                 <span>UNDANGAN</span>
@@ -118,9 +118,9 @@ export default function WeddingInvitation() {
               {renderInvitationSection()}
             </div>
 
-            {/* Bottom Y2K Pixel Nav Bar */}
+            {/* Bottom Brutalist Nav Bar */}
             {currentSection !== "cover" && (
-              <nav className="absolute bottom-0 left-0 right-0 bg-[#ffb6c1] border-t-4 border-[#f08080] flex justify-around items-center pt-2 pb-safe px-2 z-30 shadow-lg">
+              <nav className="absolute bottom-0 left-0 right-0 bg-white border-t-[3px] border-black flex justify-around items-stretch pt-1.5 pb-safe px-1 z-30">
                 {NAV_ITEMS.map((item) => {
                   const isActive =
                     item.key === currentSection && mode === "invitation";
@@ -134,24 +134,22 @@ export default function WeddingInvitation() {
                           navigateTo(item.key as InvitationSection);
                         }
                       }}
-                      className={`flex flex-col items-center gap-1 px-2 py-1 rounded cursor-pointer transition-all ${
+                      className={`flex-1 flex flex-col items-center gap-0.5 px-1 py-1.5 cursor-pointer transition-none border-[3px] ${
                         isActive
-                          ? "bg-white pixel-box scale-105"
-                          : "hover:bg-white/40 active:scale-95"
+                          ? "bg-[#FFD500] border-black"
+                          : "bg-transparent border-transparent active:bg-[#FFD500]"
                       }`}
                     >
-                      <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+                      <div className="relative w-7 h-7 flex items-center justify-center">
                         <Image
                           src={item.icon}
                           alt={item.label}
-                          width={32}
-                          height={32}
+                          width={28}
+                          height={28}
                           className="pixelated object-contain"
                         />
                       </div>
-                      <span
-                        className="text-[8px] text-[#1e3a8a] font-bold font-pixel"
-                      >
+                      <span className="text-[9px] text-black font-bold">
                         {item.label}
                       </span>
                     </button>

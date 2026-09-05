@@ -34,6 +34,7 @@ interface CheckpointData {
   subtitle: string;
   details: { label: string; value: string }[];
   color: string;
+  mapUrl?: string;
 }
 
 interface Particle {
@@ -61,9 +62,9 @@ const CHECKPOINTS: CheckpointData[] = [
     title: "Tanggal Pernikahan",
     subtitle: "Save The Date!",
     details: [
-      { label: "Hari", value: "Jumat Kliwon" },
-      { label: "Tanggal", value: "18 September 2026" },
-      { label: "Waktu", value: "08:00 - 14:00 WIB" },
+      { label: "Hari", value: "Minggu Legi" },
+      { label: "Tanggal", value: "8 November 2026" },
+      { label: "Waktu", value: "08:00 - 13:00 WIB" },
     ],
     color: "#ff6b9d",
   },
@@ -72,14 +73,18 @@ const CHECKPOINTS: CheckpointData[] = [
     distance: 2400,
     icon: "&#127963;",
     title: "Lokasi Acara",
-    subtitle: "Monte Carlo Chapel",
+    subtitle: "Hotel Indies Style",
     details: [
-      { label: "Akad Nikah", value: "08:00 WIB" },
-      { label: "Resepsi", value: "11:00 WIB" },
-      { label: "Tempat", value: "Chapel of Sacred Vows" },
-      { label: "Alamat", value: "123 Somewhere Street" },
+      { label: "Akad Nikah", value: "Jam 08:00 WIB" },
+      { label: "Resepsi", value: "Jam 11:00 - 13:00 WIB" },
+      { label: "Tempat", value: "Hotel Indies Style Bandung" },
+      {
+        label: "Alamat",
+        value: "Jl. Kebon Jati No.32, Kb. Jeruk, Kec. Andir, Kota Bandung 40181",
+      },
     ],
     color: "#ffd93d",
+    mapUrl: "https://maps.app.goo.gl/AKG3KbeNVdVBsvLR6",
   },
   {
     id: 3,
@@ -89,7 +94,7 @@ const CHECKPOINTS: CheckpointData[] = [
     subtitle: "The Happy Couple",
     details: [
       { label: "Mempelai Pria", value: "Aldi" },
-      { label: "Mempelai Wanita", value: "Qisty" },
+      { label: "Mempelai Wanita", value: "Qisti" },
       { label: "Tagline", value: "#AlQiSAH" },
     ],
     color: "#6bcb77",
@@ -609,26 +614,24 @@ export default function GameSection({ onFinished }: GameSectionProps) {
   }, [render]);
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center bg-[#1a2332] overflow-hidden select-none">
+    <div className="relative w-full h-full flex flex-col items-center bg-[#111111] overflow-hidden select-none">
       {/* Top Header */}
-      <div className="w-full shrink-0 flex items-center justify-between px-3 py-2 bg-[#0c1017]/90 border-b border-amber-500/30 text-xs font-mono text-amber-400 z-20">
-        <div className="flex items-center gap-1.5 font-bold">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+      <div className="w-full shrink-0 flex items-center justify-between px-3 py-2 bg-black border-b-[3px] border-[#FFD500] z-20">
+        <div className="flex items-center gap-1.5 font-display text-[11px] text-[#FFD500]">
+          <span className="inline-block w-2.5 h-2.5 bg-[#E10600] border border-white" />
           <span>F1 MONTE CARLO</span>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              const nextVal = !soundEnabled;
-              soundEnabledRef.current = nextVal;
-              setSoundEnabled(nextVal);
-            }}
-            className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-[10px]"
-          >
-            {soundEnabled ? "SFX: ON" : "SFX: OFF"}
-          </button>
-        </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            const nextVal = !soundEnabled;
+            soundEnabledRef.current = nextVal;
+            setSoundEnabled(nextVal);
+          }}
+          className="px-2 py-1 bg-white text-black border-2 border-white text-[10px] font-bold"
+        >
+          {soundEnabled ? "SFX: ON" : "SFX: OFF"}
+        </button>
       </div>
 
       {/* Game Canvas */}
@@ -649,7 +652,7 @@ export default function GameSection({ onFinished }: GameSectionProps) {
         {/* Jump reminder */}
         {gameState === "playing" && (
           <div className="absolute bottom-6 inset-x-0 flex justify-center pointer-events-none z-10 animate-bounce px-4">
-            <div className="bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-amber-400/50 shadow-lg text-amber-300 text-[10px] sm:text-xs font-bold tracking-wider uppercase font-mono text-center">
+            <div className="bg-black px-4 py-2 border-[3px] border-[#FFD500] text-[#FFD500] font-display text-[10px] sm:text-xs text-center">
               TAP TO JUMP!
             </div>
           </div>
@@ -657,92 +660,77 @@ export default function GameSection({ onFinished }: GameSectionProps) {
 
         {/* Start Screen */}
         {gameState === "start" && (
-          <div className="absolute inset-0 bg-[#090d16]/85 backdrop-blur-sm flex flex-col items-center justify-center text-center z-30 px-6 py-4 overflow-y-auto">
-            <div className="relative mb-2 w-64 h-32">
-              <Image
-                src="/wedding/sprite-car-transparent.png"
-                alt="Aldi & Qisty Wedding F1 Car"
-                fill
-                className="object-contain pixelated"
-                priority
-              />
-            </div>
-
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 border border-red-500/40 text-red-400 text-xs font-mono font-bold mb-2 uppercase tracking-wider">
-              Formula 1 Wedding Edition
-            </div>
-
-            <h1 className="text-white text-2xl font-bold tracking-wide mb-1 font-mono">
-              ALDI &amp; QISTY
-            </h1>
-            <p className="text-amber-400 text-sm font-semibold mb-1 font-mono">
-              The Grand Prix to Forever
-            </p>
-            <p className="text-slate-400 text-xs mb-3 font-mono">
-              #AlQiSAH • Monte Carlo Street Circuit
-            </p>
-
-            <div className="bg-slate-800/60 rounded-lg px-4 py-2 mb-5 text-xs font-mono">
-              <p className="text-amber-300 font-bold mb-1">3 Checkpoints to Collect:</p>
-              <div className="flex gap-3 text-slate-300">
-                <span>1: Tanggal</span>
-                <span>2: Lokasi</span>
-                <span>3: Couple</span>
+          <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center z-30 px-5 py-4 overflow-y-auto">
+            <div className="brut-card-yellow w-full max-w-[320px] p-5">
+              <div className="relative mx-auto mb-3 w-56 h-28">
+                <Image
+                  src="/wedding/sprite-car-transparent.png"
+                  alt="Aldi & Qisti Wedding F1 Car"
+                  fill
+                  className="object-contain pixelated"
+                  priority
+                />
               </div>
-            </div>
 
-            <button
-              onClick={startGame}
-              className="bg-gradient-to-r from-red-600 to-rose-600 text-white border-2 border-red-400 rounded-xl px-8 py-3.5 font-bold font-mono text-base uppercase tracking-widest shadow-[0_6px_0_#991b1b] hover:brightness-110 active:translate-y-1 active:shadow-none transition-all cursor-pointer"
-            >
-              START RACE &#9654;
-            </button>
+              <p className="font-display text-[10px] tracking-widest mb-2">
+                ★ FORMULA 1 WEDDING EDITION ★
+              </p>
+              <h1 className="font-display text-3xl leading-none mb-2">
+                ALDI &amp; QISTI
+              </h1>
+              <p className="text-sm font-bold mb-3">
+                The Grand Prix to Forever
+              </p>
 
-            <div className="mt-4 text-[11px] text-slate-400 font-mono">
-              Guide the wedding car & collect all checkpoints!
+              <div className="bg-black text-white px-3 py-2 mb-4">
+                <p className="font-display text-[10px] text-[#FFD500] mb-1">
+                  3 CHECKPOINTS:
+                </p>
+                <p className="text-xs font-bold">
+                  1 TANGGAL • 2 LOKASI • 3 COUPLE
+                </p>
+              </div>
+
+              <button
+                onClick={startGame}
+                className="brut-btn-red w-full min-h-[52px] py-3.5 px-4 cursor-pointer font-display text-base"
+              >
+                START RACE →
+              </button>
+              <p className="text-xs font-bold mt-3">
+                Tap layar / tekan SPASI untuk lompat!
+              </p>
             </div>
           </div>
         )}
 
         {/* Checkpoint Popup */}
         {gameState === "checkpoint" && activeCheckpoint && (
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-40 px-6 py-4">
-            <div
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-[320px] max-h-full overflow-y-auto"
-              style={{ borderTop: `4px solid ${activeCheckpoint.color}` }}
-            >
-              {/* Header */}
-              <div
-                className="px-5 pt-5 pb-3 text-center"
-                style={{ background: `linear-gradient(135deg, ${activeCheckpoint.color}22, ${activeCheckpoint.color}11)` }}
-              >
-                <div className="text-4xl mb-2" dangerouslySetInnerHTML={{ __html: activeCheckpoint.icon }} />
-                <div
-                  className="inline-block px-3 py-0.5 rounded-full text-xs font-bold font-mono text-white mb-2"
-                  style={{ backgroundColor: activeCheckpoint.color }}
-                >
-                  CHECKPOINT {activeCheckpoint.id}
-                </div>
-                <h3 className="text-lg font-bold font-mono text-slate-800">
-                  {activeCheckpoint.title}
+          <div className="absolute inset-0 bg-black/75 flex items-center justify-center z-40 px-5 py-4">
+            <div className="brut-card-yellow w-full max-w-[320px] max-h-full overflow-y-auto">
+              <div className="px-5 pt-5 pb-3 text-center border-b-[3px] border-black">
+                <p className="font-display text-[11px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
+                  CHECKPOINT {activeCheckpoint.id} ✓
+                </p>
+                <h3 className="font-display text-xl leading-tight">
+                  {activeCheckpoint.title.toUpperCase()}
                 </h3>
-                <p className="text-sm text-slate-500 font-mono">
+                <p className="text-sm font-bold mt-1">
                   {activeCheckpoint.subtitle}
                 </p>
               </div>
 
-              {/* Details */}
-              <div className="px-5 py-4">
-                <div className="space-y-2">
+              <div className="px-5 py-4 bg-white border-b-[3px] border-black">
+                <div className="flex flex-col gap-2">
                   {activeCheckpoint.details.map((detail, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center py-1.5 border-b border-slate-100 last:border-0"
+                      className="flex justify-between items-start gap-3 py-1 border-b-2 border-black/10 last:border-0"
                     >
-                      <span className="text-xs text-slate-400 font-mono uppercase tracking-wide">
-                        {detail.label}
+                      <span className="font-display text-[10px] pt-0.5 shrink-0">
+                        {detail.label.toUpperCase()}
                       </span>
-                      <span className="text-sm font-bold text-slate-700 font-mono text-right ml-3 break-words">
+                      <span className="text-[15px] font-bold text-right break-words">
                         {detail.value}
                       </span>
                     </div>
@@ -750,14 +738,22 @@ export default function GameSection({ onFinished }: GameSectionProps) {
                 </div>
               </div>
 
-              {/* Continue Button */}
-              <div className="px-5 pb-5">
+              <div className="px-5 py-4 flex flex-col gap-2.5">
+                {activeCheckpoint.mapUrl && (
+                  <button
+                    onClick={() =>
+                      window.open(activeCheckpoint.mapUrl, "_blank")
+                    }
+                    className="brut-btn-black w-full min-h-[48px] py-3 cursor-pointer font-display text-sm"
+                  >
+                    📍 BUKA MAPS
+                  </button>
+                )}
                 <button
                   onClick={continueFromCheckpoint}
-                  className="w-full py-3 rounded-xl font-bold font-mono text-sm uppercase tracking-wider text-white transition-all active:scale-[0.98]"
-                  style={{ backgroundColor: activeCheckpoint.color }}
+                  className="brut-btn-red w-full min-h-[48px] py-3 cursor-pointer font-display text-sm"
                 >
-                  Lanjutkan Race &#9654;
+                  LANJUT GAS →
                 </button>
               </div>
             </div>
@@ -766,60 +762,53 @@ export default function GameSection({ onFinished }: GameSectionProps) {
 
         {/* Victory Screen */}
         {gameState === "end" && (
-          <div className="absolute inset-0 bg-[#070b12]/90 backdrop-blur-md flex flex-col items-center justify-center text-center z-30 px-6 py-4 overflow-y-auto">
-            <div className="relative mb-1 w-52 h-28">
-              <Image
-                src="/wedding/f1-podium.png"
-                alt="Winner's Podium"
-                fill
-                className="object-contain pixelated"
-                priority
-              />
-            </div>
+          <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center text-center z-30 px-5 py-4 overflow-y-auto">
+            <div className="brut-card w-full max-w-[320px] p-5">
+              <div className="relative mx-auto mb-2 w-48 h-24">
+                <Image
+                  src="/wedding/f1-podium.png"
+                  alt="Winner's Podium"
+                  fill
+                  className="object-contain pixelated"
+                  priority
+                />
+              </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-mono font-bold mb-2">
-              &#127942; P1 WINNER • GRAND PRIX OF LOVE
-            </div>
+              <p className="font-display text-[10px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
+                🏆 P1 — GRAND PRIX OF LOVE
+              </p>
+              <h2 className="font-display text-2xl leading-none mb-2">
+                FINISH!
+              </h2>
+              <p className="text-[15px] font-bold mb-4">
+                Aldi & Qisti sampai podium. Giliranmu konfirmasi kehadiran!
+              </p>
 
-            <h2 className="text-white text-2xl font-bold mb-1 font-mono">
-              VICTORY LAP COMPLETE!
-            </h2>
-            <p className="text-amber-200 text-sm font-semibold mb-1 font-mono">
-              Aldi &amp; Qisty Reached The Podium!
-            </p>
-            <p className="text-slate-300 text-xs max-w-xs mb-4 font-mono leading-relaxed">
-              Semua checkpoint sudah terkumpul! Silakan konfirmasi kehadiran Anda!
-            </p>
+              <div className="flex gap-2 justify-center mb-4">
+                {CHECKPOINTS.map((cp) => (
+                  <div
+                    key={cp.id}
+                    className="brut-card-yellow px-2.5 py-1.5 font-display text-[10px]"
+                  >
+                    CP{cp.id} ✓
+                  </div>
+                ))}
+              </div>
 
-            {/* Collected checkpoints summary */}
-            <div className="flex gap-2 mb-5">
-              {CHECKPOINTS.map((cp) => (
-                <div
-                  key={cp.id}
-                  className="flex flex-col items-center bg-white/10 rounded-lg px-3 py-2"
+              <div className="flex flex-col gap-2.5">
+                <button
+                  onClick={onFinished}
+                  className="brut-btn-red w-full min-h-[52px] py-3.5 cursor-pointer font-display text-sm"
                 >
-                  <div className="text-lg" dangerouslySetInnerHTML={{ __html: cp.icon }} />
-                  <span className="text-[10px] text-slate-300 font-mono mt-1">
-                    CP{cp.id}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-3 w-full max-w-xs">
-              <button
-                onClick={onFinished}
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-2 border-emerald-400 rounded-xl py-3.5 font-bold font-mono text-sm uppercase tracking-wider shadow-[0_5px_0_#065f46] hover:brightness-110 active:translate-y-1 active:shadow-none transition-all cursor-pointer"
-              >
-                Lanjut ke RSVP &amp; Undangan &#10140;
-              </button>
-
-              <button
-                onClick={restartGame}
-                className="w-full bg-slate-800 text-slate-200 border border-slate-600 rounded-xl py-2.5 font-bold font-mono text-xs uppercase tracking-wider hover:bg-slate-700 transition-colors cursor-pointer"
-              >
-                &#8634; Main Lagi
-              </button>
+                  KE RSVP →
+                </button>
+                <button
+                  onClick={restartGame}
+                  className="brut-btn w-full min-h-[44px] py-2.5 cursor-pointer font-display text-xs bg-white"
+                >
+                  ↻ MAIN LAGI
+                </button>
+              </div>
             </div>
           </div>
         )}
