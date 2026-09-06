@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Project Overview
 
-Y2K pixel-art wedding invitation + F1 checkpoint racing game ("AlQiSAH", Aldi & Qisty). Single-page Next.js 16 app with three modes: mode selector, invitation flow (cover/couple/event/gallery/rsvp), and canvas racing game with wedding-info checkpoints.
+Pastel Retro Console wedding invitation + checkpoint racing game ("AlQiSAH", Aldi & Qisti). Single-page Next.js 16 app with five card-based RPG screens (Home/Player Select/Pit Stop/Gallery/RSVP) plus canvas F1 mini-game. Mobile-first 480px wrapper centered on desktop (body flex, dot pattern), pastel palette #ff6b97/#0051d5/#674bb5/#fbf9f5.
 
 ## Commands
 
@@ -27,35 +27,34 @@ No test suite exists. No typecheck script — use `npm run build` to verify type
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout, both fonts, viewport lock
+│   ├── layout.tsx          # Root layout, Rubik + Plus Jakarta Sans, viewport lock, Material Symbols
 │   ├── page.tsx            # Renders <WeddingInvitation />
-│   └── globals.css         # Tailwind v4 + Y2K pixel design system
+│   └── globals.css         # Tailwind v4 + Pastel Retro Console design system (480 wrapper, soft shadows)
 ├── components/
-│   ├── WeddingInvitation.tsx  # Main container — mode/section routing + audio clicks
-│   ├── ModeSelector.tsx       # Pixel-art home screen
-│   ├── CoverSection.tsx       # "Save the Date" cover
-│   ├── CoupleSection.tsx      # Bride & groom info
-│   ├── EventSection.tsx       # Akad & resepsi + countdown + maps/calendar links
-│   ├── GallerySection.tsx     # Photo grid + lightbox
-│   ├── GameSection.tsx        # Canvas F1 game with checkpoint popups
-│   ├── RsvpSection.tsx        # RSVP form + wishes board
-│   └── WeddingGame.tsx        # DEAD CODE — unused wrapper, do not use
+│   ├── WeddingInvitation.tsx  # Main container — mobile-wrapper 480 + mode/section routing + fixed bottom-nav
+│   ├── ModeSelector.tsx       # Pastel Home (ROMANCE.EXE + heart garland + car + countdown + CTAs)
+│   ├── CoverSection.tsx       # Save the Date (same pastel, single CTA fallback)
+│   ├── CoupleSection.tsx      # Player Select (P1/P2 cards + synergy + QS Ar-Rum:21)
+│   ├── EventSection.tsx       # Pit Stop (quest log + countdown + Stage 01/02 + venue + calendar)
+│   ├── GallerySection.tsx     # Photo Finish (cutscene grid auto-fit + lightbox)
+│   ├── GameSection.tsx        # Canvas F1 game (380×640) with pastel header
+│   └── RsvpSection.tsx        # Race Control terminal (stepper pax 1-2 + wishes feed)
 └── utils/
     └── audio.ts            # audioManager singleton (playClick etc.)
 ```
 
-- `WeddingInvitation` owns all mode/section state — child sections receive callbacks, not state. Game states: `"start" | "playing" | "checkpoint" | "end"`.
+- `WeddingInvitation` owns all mode/section state — child sections receive callbacks, not state. Flow: selector → cover → couple → event/gallery/rsvp; bottom navbar (hidden on cover) includes a Home button back to the selector. Game states: `"start" | "playing" | "checkpoint" | "end"`.
 - `GameSection` is the only canvas component (fixed 380×640 internal resolution). Checkpoint flow: car crosses marker → `gameSpeedRef = 0`, state → `"checkpoint"`, popup shows → continue button restores `INITIAL_SPEED` and resumes loop.
-- All components are `"use client"` — no server components besides layout.
+- All components are `"use client"` — no server components besides layout. Date target is `Jumat, 18 September 2026` (Asia/Jakarta).
 - `CLAUDE.md` just re-exports this file (`@AGENTS.md`) — edit here only.
 
 ## Key Conventions
 
 - **Path alias**: `@/*` maps to `./src/*`
-- **Fonts**: Courier Prime (`--font-courier`, body) + Press_Start_2P (`--font-pixel`, headings/labels). Use the `.font-pixel` helper class or `style={{ fontFamily: "var(--font-pixel), monospace" }}` — never hardcode the font stack.
-- **Pixel design system** (in `globals.css`, use these — don't invent new styles): `.pixel-box` / `-pink` / `-amber` / `-emerald` for cards, `.pixel-btn*` variants for buttons, `.pixel-input` for form fields, `.pb-safe` / `.pt-safe` for safe-area padding.
+- **Fonts**: Rubik (`--font-rubik`, headings/labels) + Plus Jakarta Sans (`--font-jakarta`, body). Use the `.font-rubik` helper class — never hardcode the font stack. Material Symbols Outlined via CDN for icons.
+- **Pastel Retro Console design system** (in `globals.css`, use these — don't invent new styles): `.mobile-wrapper` (480px centered card, `box-shadow 0 0 20px rgba(0,0,0,0.1)`), `.gallery-grid` (`repeat(auto-fit, minmax(150px,1fr)) gap 16px`), `body` flex center `min-height 100vh` + dot pattern, `word-wrap:break-word` for long texts, `width:100% box-sizing:border-box` for inputs, `.bottom-nav` fixed `max-width:480px` + `.main-content pb-80`. Cards `rounded-xl` `shadow soft pastel`, buttons `rounded-xl` `shadow 4px 0`, `.pb-safe` / `.pt-safe` for safe-area padding. Section changes animate via `.animate-section-in`.
 - **Viewport**: Locked (no zoom) via `Viewport` export in `layout.tsx`. `lang="id"` (Indonesian).
-- **Assets**: All in `public/wedding/`. Navbar icons are `nav-{heart,star,frame,envelope,play}.png` (map to couple/event/gallery/rsvp/game). Game sprites are `f1-*` (bg/arch/podium) + `obstacle-*` (cone/tires/sign/flag/light) + `sprite-car-full.png` (player car). Generated from `Asset Wedding/` originals via root `*.py` scripts — edit sources, not outputs.
+- **Assets**: All in `public/wedding/`. Game sprites are `f1-*` (bg/finish-line/podium) + `obstacle-*` (cone/tires/speed-sign/flag/light) + `sprite-car-transparent.png` (player car) + `sprite-{bride,groom}-transparent.png` (couple photos) + `Gemini_Generated…jpeg` (gallery). Originals in `Asset Wedding/` via `*.py` scripts.
 - **Tailwind v4**: Uses `@import "tailwindcss"` syntax, not `@tailwind` directives. Theme tokens in `globals.css` via `@theme inline`.
 
 ## Gotchas

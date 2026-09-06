@@ -1,23 +1,24 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata, Viewport } from "next";
-import { Archivo_Black, Space_Grotesk } from "next/font/google";
+import { Rubik, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const display = Archivo_Black({
-  variable: "--font-display",
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["600", "700", "800"],
 });
 
-const grotesk = Space_Grotesk({
-  variable: "--font-grotesk",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Aldi & Qisti — Grand Prix to Forever | #AlQiSAH",
   description:
-    "Undangan Pernikahan Neo-Brutalist F1 — Aldi & Qisti, Minggu 8 November 2026, Hotel Indies Style Bandung",
+    "Undangan Pernikahan Pastel Retro Console — Aldi & Qisti, Jumat 18 September 2026, Hotel Indies Style Bandung",
 };
 
 export const viewport: Viewport = {
@@ -36,9 +37,15 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${display.variable} ${grotesk.variable} h-full antialiased`}
+      className={`${rubik.variable} ${jakarta.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#111111] font-sans text-[#111111] selection:bg-[#FFD500] selection:text-black">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-full bg-[#fbf9f5] font-jakarta text-[#1b1c1a] selection:bg-[#ffb1c3] selection:text-[#3f0019]">
         {children}
       </body>
     </html>

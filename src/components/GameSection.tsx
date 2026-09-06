@@ -58,12 +58,12 @@ const CHECKPOINTS: CheckpointData[] = [
   {
     id: 1,
     distance: 1200,
-    icon: "&#128197;",
+    icon: "📅",
     title: "Tanggal Pernikahan",
     subtitle: "Save The Date!",
     details: [
-      { label: "Hari", value: "Minggu Legi" },
-      { label: "Tanggal", value: "8 November 2026" },
+      { label: "Hari", value: "Jumat Legi" },
+      { label: "Tanggal", value: "18 September 2026" },
       { label: "Waktu", value: "08:00 - 13:00 WIB" },
     ],
     color: "#ff6b9d",
@@ -71,7 +71,7 @@ const CHECKPOINTS: CheckpointData[] = [
   {
     id: 2,
     distance: 2400,
-    icon: "&#127963;",
+    icon: "📍",
     title: "Lokasi Acara",
     subtitle: "Hotel Indies Style",
     details: [
@@ -89,7 +89,7 @@ const CHECKPOINTS: CheckpointData[] = [
   {
     id: 3,
     distance: 3600,
-    icon: "&#128149;",
+    icon: "💒",
     title: "Mempelai",
     subtitle: "The Happy Couple",
     details: [
@@ -164,7 +164,6 @@ export default function GameSection({ onFinished }: GameSectionProps) {
   const particlesRef = useRef<Particle[]>([]);
 
   const [gameState, setGameState] = useState<GameState>("start");
-  const [progressPercent, setProgressPercent] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [activeCheckpoint, setActiveCheckpoint] = useState<CheckpointData | null>(null);
 
@@ -471,8 +470,7 @@ export default function GameSection({ onFinished }: GameSectionProps) {
     frameCountRef.current++;
     distanceTravelledRef.current += gameSpeedRef.current;
 
-    const pct = Math.min(100, Math.floor((distanceTravelledRef.current / FINISH_DISTANCE) * 100));
-    setProgressPercent(pct);
+    // Progress is rendered in the canvas HUD directly from distanceTravelledRef
 
     // Physics
     player.vy += player.gravity;
@@ -485,8 +483,9 @@ export default function GameSection({ onFinished }: GameSectionProps) {
     }
 
     // Scroll scenery & check collisions
-    for (const item of scenery) {
-      item.x -= gameSpeedRef.current;
+    for (let i = 0; i < scenery.length; i++) {
+      const item = scenery[i];
+      scenery[i] = { ...item, x: item.x - gameSpeedRef.current };
 
       // Checkpoint detection
       if (item.type === "checkpoint" && item.checkpointId !== undefined) {
@@ -532,16 +531,23 @@ export default function GameSection({ onFinished }: GameSectionProps) {
     }
   }, [triggerConfetti, playSound]);
 
-  // Game loop
+  // Game loop — use a ref to avoid self-referencing useCallback
+  const gameLoopRef = useRef<() => void>(() => {});
+
   const gameLoop = useCallback(() => {
     if (gameStateRef.current === "playing") {
       update();
     }
     render();
     if (gameStateRef.current !== "end") {
-      animFrameRef.current = requestAnimationFrame(gameLoop);
+      animFrameRef.current = requestAnimationFrame(() => gameLoopRef.current());
     }
   }, [update, render]);
+
+  // Keep the ref in sync
+  useEffect(() => {
+    gameLoopRef.current = gameLoop;
+  }, [gameLoop]);
 
   // Continue after checkpoint
   const continueFromCheckpoint = useCallback(() => {
@@ -549,8 +555,8 @@ export default function GameSection({ onFinished }: GameSectionProps) {
     gameStateRef.current = "playing";
     setGameState("playing");
     gameSpeedRef.current = INITIAL_SPEED;
-    gameLoop();
-  }, [gameLoop]);
+    gameLoopRef.current();
+  }, []);
 
   // Jump handler
   const handleJump = useCallback(
@@ -573,9 +579,9 @@ export default function GameSection({ onFinished }: GameSectionProps) {
       gameStateRef.current = "playing";
       setGameState("playing");
       playSound("start");
-      gameLoop();
+      gameLoopRef.current();
     },
-    [gameLoop, playSound]
+    [playSound]
   );
 
   // Restart handler
@@ -593,8 +599,8 @@ export default function GameSection({ onFinished }: GameSectionProps) {
     gameStateRef.current = "playing";
     setGameState("playing");
     playSound("start");
-    gameLoop();
-  }, [gameLoop, playSound]);
+    gameLoopRef.current();
+  }, [playSound]);
 
   // Keyboard controls
   useEffect(() => {
@@ -614,12 +620,12 @@ export default function GameSection({ onFinished }: GameSectionProps) {
   }, [render]);
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center bg-[#111111] overflow-hidden select-none">
-      {/* Top Header */}
-      <div className="w-full shrink-0 flex items-center justify-between px-3 py-2 bg-black border-b-[3px] border-[#FFD500] z-20">
-        <div className="flex items-center gap-1.5 font-display text-[11px] text-[#FFD500]">
-          <span className="inline-block w-2.5 h-2.5 bg-[#E10600] border border-white" />
-          <span>F1 MONTE CARLO</span>
+    <div className="relative w-full h-full flex flex-col items-center bg-[#fbf9f5] overflow-hidden select-none">
+      {/* Top Header — pastel console */}
+      <div className="w-full shrink-0 flex items-center justify-between px-3 py-2.5 bg-[#ff6b97] z-20">
+        <div className="flex items-center gap-1.5 font-rubik text-[10px] font-extrabold text-[#6e0030] tracking-widest">
+          <span className="w-2 h-2 rounded bg-white shadow-[1px_1px_0px_#8c0c41]" />
+          <span>F1 MONTE CARLO — PASTEL GP</span>
         </div>
         <button
           onClick={(e) => {
@@ -628,7 +634,7 @@ export default function GameSection({ onFinished }: GameSectionProps) {
             soundEnabledRef.current = nextVal;
             setSoundEnabled(nextVal);
           }}
-          className="px-2 py-1 bg-white text-black border-2 border-white text-[10px] font-bold"
+          className="px-2.5 py-1 bg-white text-[#1b1c1a] rounded-full border border-[#efeeea] font-rubik text-[10px] font-bold shadow-sm"
         >
           {soundEnabled ? "SFX: ON" : "SFX: OFF"}
         </button>
@@ -649,11 +655,11 @@ export default function GameSection({ onFinished }: GameSectionProps) {
           style={{ imageRendering: "pixelated", aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
         />
 
-        {/* Jump reminder */}
+        {/* Jump reminder — pastel */}
         {gameState === "playing" && (
           <div className="absolute bottom-6 inset-x-0 flex justify-center pointer-events-none z-10 animate-bounce px-4">
-            <div className="bg-black px-4 py-2 border-[3px] border-[#FFD500] text-[#FFD500] font-display text-[10px] sm:text-xs text-center">
-              TAP TO JUMP!
+            <div className="bg-white px-4 py-2 rounded-full border border-[#efeeea] text-[#ad2b58] font-rubik text-[10px] font-bold text-center tracking-widest shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+              TAP TO JUMP! — SPASI
             </div>
           </div>
         )}
@@ -665,39 +671,39 @@ export default function GameSection({ onFinished }: GameSectionProps) {
               <div className="relative mx-auto mb-3 w-56 h-28">
                 <Image
                   src="/wedding/sprite-car-transparent.png"
-                  alt="Aldi & Qisti Wedding F1 Car"
+                  alt="Aldi & Qisti Wedding F1 Car + kucing"
                   fill
                   className="object-contain pixelated"
                   priority
                 />
               </div>
 
-              <p className="font-display text-[10px] tracking-widest mb-2">
+              <p className="font-pixel text-[7px] tracking-widest mb-2 leading-4">
                 ★ FORMULA 1 WEDDING EDITION ★
               </p>
               <h1 className="font-display text-3xl leading-none mb-2">
-                ALDI &amp; QISTI
+                ALDI & QISTI
               </h1>
-              <p className="text-sm font-bold mb-3">
+              <p className="font-vt text-[18px] leading-tight mb-3">
                 The Grand Prix to Forever
               </p>
 
-              <div className="bg-black text-white px-3 py-2 mb-4">
-                <p className="font-display text-[10px] text-[#FFD500] mb-1">
+              <div className="bg-black text-white px-3 py-2 mb-4 border-[3px] border-[#FFD500]">
+                <p className="font-pixel text-[7px] text-[#FFD500] mb-1 tracking-widest">
                   3 CHECKPOINTS:
                 </p>
-                <p className="text-xs font-bold">
+                <p className="font-vt text-[16px]">
                   1 TANGGAL • 2 LOKASI • 3 COUPLE
                 </p>
               </div>
 
               <button
                 onClick={startGame}
-                className="brut-btn-red w-full min-h-[52px] py-3.5 px-4 cursor-pointer font-display text-base"
+                className="retro-btn bg-[#E10600] text-white w-full min-h-[52px] py-3.5 px-4 cursor-pointer"
               >
                 START RACE →
               </button>
-              <p className="text-xs font-bold mt-3">
+              <p className="font-vt text-[16px] mt-3">
                 Tap layar / tekan SPASI untuk lompat!
               </p>
             </div>
@@ -707,30 +713,31 @@ export default function GameSection({ onFinished }: GameSectionProps) {
         {/* Checkpoint Popup */}
         {gameState === "checkpoint" && activeCheckpoint && (
           <div className="absolute inset-0 bg-black/75 flex items-center justify-center z-40 px-5 py-4">
-            <div className="brut-card-yellow w-full max-w-[320px] max-h-full overflow-y-auto">
-              <div className="px-5 pt-5 pb-3 text-center border-b-[3px] border-black">
-                <p className="font-display text-[11px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
+            <div className="retro-card w-full max-w-[320px] max-h-full overflow-y-auto bg-[#FFD500]">
+              <div className="px-5 pt-5 pb-3 text-center border-b-[4px] border-black">
+                <p className="text-3xl mb-1">{activeCheckpoint.icon}</p>
+                <p className="font-pixel text-[8px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
                   CHECKPOINT {activeCheckpoint.id} ✓
                 </p>
-                <h3 className="font-display text-xl leading-tight">
+                <h3 className="font-pixel text-[10px] leading-[1.6] tracking-wide">
                   {activeCheckpoint.title.toUpperCase()}
                 </h3>
-                <p className="text-sm font-bold mt-1">
+                <p className="font-vt text-[18px] mt-1">
                   {activeCheckpoint.subtitle}
                 </p>
               </div>
 
-              <div className="px-5 py-4 bg-white border-b-[3px] border-black">
+              <div className="px-5 py-4 bg-white border-b-[4px] border-black">
                 <div className="flex flex-col gap-2">
                   {activeCheckpoint.details.map((detail, idx) => (
                     <div
                       key={idx}
                       className="flex justify-between items-start gap-3 py-1 border-b-2 border-black/10 last:border-0"
                     >
-                      <span className="font-display text-[10px] pt-0.5 shrink-0">
+                      <span className="font-pixel text-[7px] pt-1 shrink-0 leading-4">
                         {detail.label.toUpperCase()}
                       </span>
-                      <span className="text-[15px] font-bold text-right break-words">
+                      <span className="font-vt text-[17px] leading-tight text-right break-words">
                         {detail.value}
                       </span>
                     </div>
@@ -744,14 +751,14 @@ export default function GameSection({ onFinished }: GameSectionProps) {
                     onClick={() =>
                       window.open(activeCheckpoint.mapUrl, "_blank")
                     }
-                    className="brut-btn-black w-full min-h-[48px] py-3 cursor-pointer font-display text-sm"
+                    className="retro-btn bg-black text-white w-full min-h-[48px] py-3 cursor-pointer"
                   >
                     📍 BUKA MAPS
                   </button>
                 )}
                 <button
                   onClick={continueFromCheckpoint}
-                  className="brut-btn-red w-full min-h-[48px] py-3 cursor-pointer font-display text-sm"
+                  className="retro-btn bg-[#E10600] text-white w-full min-h-[48px] py-3 cursor-pointer"
                 >
                   LANJUT GAS →
                 </button>
@@ -760,27 +767,27 @@ export default function GameSection({ onFinished }: GameSectionProps) {
           </div>
         )}
 
-        {/* Victory Screen */}
+        {/* Victory Screen — Victory Lap Complete + podium retained */}
         {gameState === "end" && (
           <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center text-center z-30 px-5 py-4 overflow-y-auto">
-            <div className="brut-card w-full max-w-[320px] p-5">
+            <div className="retro-card w-full max-w-[320px] p-5">
               <div className="relative mx-auto mb-2 w-48 h-24">
                 <Image
                   src="/wedding/f1-podium.png"
-                  alt="Winner's Podium"
+                  alt="Podium F1 Victory Lap Complete"
                   fill
                   className="object-contain pixelated"
                   priority
                 />
               </div>
 
-              <p className="font-display text-[10px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
+              <p className="font-pixel text-[7px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2 leading-4">
                 🏆 P1 — GRAND PRIX OF LOVE
               </p>
-              <h2 className="font-display text-2xl leading-none mb-2">
-                FINISH!
+              <h2 className="font-pixel text-[13px] leading-[1.6] mb-2">
+                VICTORY LAP COMPLETE!
               </h2>
-              <p className="text-[15px] font-bold mb-4">
+              <p className="font-vt text-[17px] leading-snug mb-4">
                 Aldi & Qisti sampai podium. Giliranmu konfirmasi kehadiran!
               </p>
 
@@ -788,7 +795,7 @@ export default function GameSection({ onFinished }: GameSectionProps) {
                 {CHECKPOINTS.map((cp) => (
                   <div
                     key={cp.id}
-                    className="brut-card-yellow px-2.5 py-1.5 font-display text-[10px]"
+                    className="brut-card-yellow px-2.5 py-1.5 font-pixel text-[7px] leading-4"
                   >
                     CP{cp.id} ✓
                   </div>
@@ -798,13 +805,13 @@ export default function GameSection({ onFinished }: GameSectionProps) {
               <div className="flex flex-col gap-2.5">
                 <button
                   onClick={onFinished}
-                  className="brut-btn-red w-full min-h-[52px] py-3.5 cursor-pointer font-display text-sm"
+                  className="retro-btn bg-[#E10600] text-white w-full min-h-[52px] py-3.5 cursor-pointer"
                 >
                   KE RSVP →
                 </button>
                 <button
                   onClick={restartGame}
-                  className="brut-btn w-full min-h-[44px] py-2.5 cursor-pointer font-display text-xs bg-white"
+                  className="retro-btn bg-white w-full min-h-[44px] py-2.5 cursor-pointer text-[9px]"
                 >
                   ↻ MAIN LAGI
                 </button>

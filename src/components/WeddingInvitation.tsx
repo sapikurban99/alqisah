@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import ModeSelector from "./ModeSelector";
 import CoverSection from "./CoverSection";
 import CoupleSection from "./CoupleSection";
@@ -15,18 +14,17 @@ type Mode = "selector" | "invitation" | "game";
 type InvitationSection = "cover" | "couple" | "event" | "gallery" | "rsvp";
 
 interface NavItem {
-  key: InvitationSection | "game";
+  key: InvitationSection;
   label: string;
-  icon: string;
-  isGame?: boolean;
+  icon: string; // material symbol name
+  path: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { key: "couple", label: "Mempelai", icon: "/wedding/nav-heart.png" },
-  { key: "event", label: "Acara", icon: "/wedding/nav-star.png" },
-  { key: "gallery", label: "Gallery", icon: "/wedding/nav-frame.png" },
-  { key: "rsvp", label: "RSVP", icon: "/wedding/nav-envelope.png" },
-  { key: "game", label: "Game F1", icon: "/wedding/nav-play.png", isGame: true },
+  { key: "couple", label: "Racers", icon: "favorite", path: "pixel-racers" },
+  { key: "event", label: "Pit Stop", icon: "calendar_today", path: "quest-schedule" },
+  { key: "gallery", label: "Gallery", icon: "photo_camera", path: "memory-gallery" },
+  { key: "rsvp", label: "RSVP", icon: "mark_email_unread", path: "rsvp-portal" },
 ];
 
 export default function WeddingInvitation() {
@@ -38,6 +36,11 @@ export default function WeddingInvitation() {
     audioManager.playClick();
     setMode("invitation");
     setCurrentSection("couple");
+  };
+
+  const handleBackToSelector = () => {
+    audioManager.playClick();
+    setMode("selector");
   };
 
   const handleSelectGame = () => {
@@ -54,41 +57,39 @@ export default function WeddingInvitation() {
   const renderInvitationSection = () => {
     switch (currentSection) {
       case "cover":
-        return <CoverSection onOpen={() => navigateTo("couple")} />;
+        return <CoverSection onOpen={() => navigateTo("couple")} onPlayGame={handleSelectGame} />;
       case "couple":
-        return <CoupleSection onOpenGame={handleSelectGame} />;
+        return <CoupleSection onNext={() => navigateTo("event")} onRsvp={() => navigateTo("rsvp")} />;
       case "event":
         return <EventSection />;
       case "gallery":
-        return <GallerySection />;
+        return <GallerySection onNext={() => navigateTo("rsvp")} />;
       case "rsvp":
         return <RsvpSection />;
       default:
-        return <CoupleSection onOpenGame={handleSelectGame} />;
+        return <CoupleSection onNext={() => navigateTo("event")} onRsvp={() => navigateTo("rsvp")} />;
     }
   };
 
   return (
-    <div className="w-full h-[100dvh] flex items-center justify-center bg-[#111111] overflow-hidden">
-      {/* Main Responsive Device Container */}
-      <div className="relative w-full max-w-[400px] h-full sm:h-[100dvh] sm:max-h-[860px] flex flex-col bg-[#FFF8EC] overflow-hidden sm:border-4 sm:border-black">
-        {/* GAME MODE */}
+    <div className="mobile-wrapper sm:my-6 sm:rounded-2xl">
+      {/* Inner device shell — retains 440 but now constrained by 480 wrapper */}
+      <div className="relative w-full flex-1 min-h-[100dvh] sm:min-h-[860px] sm:max-h-[860px] flex flex-col bg-white sm:rounded-2xl overflow-hidden">
+        {/* GAME MODE — dark canvas inside pastel shell */}
         {mode === "game" && (
-          <div className="relative w-full h-full flex flex-col">
-            {/* Back button */}
-            <div className="absolute top-2 left-2 z-30">
+          <div className="relative w-full h-full flex flex-col bg-[#fbf9f5]">
+            <div className="absolute top-3 left-3 z-30">
               <button
                 onClick={() => {
                   audioManager.playClick();
                   setMode("invitation");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white text-black brut-btn text-[10px] font-bold cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 bg-white text-[#1b1c1a] rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] text-xs font-rubik font-bold border border-[#efeeea] active:scale-[0.98] transition-transform"
               >
-                <span>←</span>
+                <span className="material-symbols-outlined text-[16px]">arrow_back</span>
                 <span>UNDANGAN</span>
               </button>
             </div>
-
             <GameSection
               onFinished={() => {
                 setMode("invitation");
@@ -98,7 +99,7 @@ export default function WeddingInvitation() {
           </div>
         )}
 
-        {/* MODE SELECTOR */}
+        {/* MODE SELECTOR — Home Pixel Save The Date */}
         {mode === "selector" && (
           <ModeSelector
             onSelectInvitation={handleSelectInvitation}
@@ -108,53 +109,50 @@ export default function WeddingInvitation() {
 
         {/* INVITATION MODE */}
         {mode === "invitation" && (
-          <div className="relative w-full h-full flex flex-col">
-            {/* Content Area */}
+          <div className="relative w-full h-full flex flex-col bg-[#fbf9f5] main-content">
             <div
-              className={`w-full flex-1 overflow-y-auto ${
-                currentSection !== "cover" ? "pb-20" : ""
+              key={currentSection}
+              className={`w-full flex-1 overflow-y-auto animate-section-in bg-[#fbf9f5] scrollbar-none main-content ${
+                currentSection !== "cover" ? "pb-24" : ""
               }`}
+              style={{ scrollbarWidth: "none" }}
             >
               {renderInvitationSection()}
             </div>
 
-            {/* Bottom Brutalist Nav Bar */}
+            {/* Bottom Nav — PRD: fixed bottom 0 width 100% max-width 480 centered, z-50 */}
             {currentSection !== "cover" && (
-              <nav className="absolute bottom-0 left-0 right-0 bg-white border-t-[3px] border-black flex justify-around items-stretch pt-1.5 pb-safe px-1 z-30">
-                {NAV_ITEMS.map((item) => {
-                  const isActive =
-                    item.key === currentSection && mode === "invitation";
-                  return (
-                    <button
-                      key={item.key}
-                      onClick={() => {
-                        if (item.isGame) {
-                          handleSelectGame();
-                        } else {
-                          navigateTo(item.key as InvitationSection);
-                        }
-                      }}
-                      className={`flex-1 flex flex-col items-center gap-0.5 px-1 py-1.5 cursor-pointer transition-none border-[3px] ${
-                        isActive
-                          ? "bg-[#FFD500] border-black"
-                          : "bg-transparent border-transparent active:bg-[#FFD500]"
-                      }`}
-                    >
-                      <div className="relative w-7 h-7 flex items-center justify-center">
-                        <Image
-                          src={item.icon}
-                          alt={item.label}
-                          width={28}
-                          height={28}
-                          className="pixelated object-contain"
-                        />
-                      </div>
-                      <span className="text-[9px] text-black font-bold">
-                        {item.label}
-                      </span>
-                    </button>
-                  );
-                })}
+              <nav className="bottom-nav pb-safe">
+                <div className="flex items-center justify-around h-16 px-1">
+                  <button
+                    onClick={handleBackToSelector}
+                    className="flex flex-col items-center justify-center min-w-[56px] h-12 px-2 rounded-lg text-[#574145] hover:text-[#ad2b58] transition-all"
+                    aria-label="Home"
+                  >
+                    <span className="material-symbols-outlined text-[22px]">cottage</span>
+                    <span className="font-rubik text-[10px] font-bold mt-0.5 tracking-wide">Home</span>
+                  </button>
+                  {NAV_ITEMS.map((item) => {
+                    const isActive = item.key === currentSection;
+                    return (
+                      <button
+                        key={item.key}
+                        onClick={() => navigateTo(item.key)}
+                        className={`flex flex-col items-center justify-center min-w-[56px] h-12 px-2 rounded-lg transition-all ${
+                          isActive
+                            ? "bg-[#ff6b97]/25 text-[#ad2b58] font-bold shadow-[0_2px_8px_rgba(255,107,151,0.25)] scale-105"
+                            : "text-[#574145] hover:text-[#ad2b58]"
+                        }`}
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        <span className="material-symbols-outlined text-[22px]" style={isActive ? { fontVariationSettings: "'FILL' 1" } : undefined}>
+                          {item.icon}
+                        </span>
+                        <span className="font-rubik text-[10px] font-semibold mt-0.5 tracking-wide">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </nav>
             )}
           </div>
