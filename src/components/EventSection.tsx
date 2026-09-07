@@ -34,7 +34,7 @@ export default function EventSection() {
     const title = encodeURIComponent("Pernikahan Aldi & Qisti (#AlQiSAH)");
     const details = encodeURIComponent("Akad Nikah & Resepsi Pernikahan Aldi & Qisti. A Game to Forever!");
     const location = encodeURIComponent(`${VENUE_NAME}, ${VENUE_ADDRESS}`);
-    const dates = "20261108T010000Z/20261108T070000Z";
+    const dates = "20260918T010000Z/20260918T070000Z";
     window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`, "_blank");
     setCalSaved(true);
     setTimeout(() => setCalSaved(false), 2000);
@@ -42,7 +42,7 @@ export default function EventSection() {
 
   return (
     <div className="w-full flex flex-col bg-[#fbf9f5] py-4 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "16px" }}>
-      {/* Quest header + heart garland */}
+      {/* Quest header + heart garland — stitch */}
       <div className="bg-white p-4 rounded-xl shadow-[0_6px_20px_rgba(173,43,88,0.08)] flex flex-col gap-3">
         <div className="flex items-center justify-between opacity-80">
           <div className="flex gap-1.5 items-center">
@@ -80,7 +80,7 @@ export default function EventSection() {
         </div>
       </div>
 
-      {/* STAGE 01 */}
+      {/* STAGE 01 — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_4px_16px_rgba(0,81,213,0.06)] flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-[#dbe1ff] text-[#00174b] font-rubik text-[10px] font-bold tracking-wide">
@@ -105,7 +105,7 @@ export default function EventSection() {
         </div>
       </div>
 
-      {/* STAGE 02 */}
+      {/* STAGE 02 — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_4px_16px_rgba(173,43,88,0.08)] flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-[#ffd9e0] text-[#3f0019] font-rubik text-[10px] font-bold tracking-wide">
@@ -131,7 +131,7 @@ export default function EventSection() {
         </div>
       </div>
 
-      {/* LOCATION */}
+      {/* LOCATION — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_4px_16px_rgba(103,75,181,0.06)] flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">

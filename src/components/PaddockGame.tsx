@@ -128,6 +128,7 @@ export default function PaddockGame({ onSwitchToRace, onNavigate, onExit }: Padd
         best = o.id;
       }
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNearbyId(best);
   }, [player]);
 
@@ -154,6 +155,20 @@ export default function PaddockGame({ onSwitchToRace, onNavigate, onExit }: Padd
     }
   };
 
+  const handleAction = useCallback(() => {
+    if (activePopup) {
+      setActivePopup(null);
+      return;
+    }
+    if (nearbyId) {
+      if (nearbyId === "race") {
+        setActivePopup("race");
+      } else {
+        setActivePopup(nearbyId);
+      }
+    }
+  }, [activePopup, nearbyId]);
+
   // keyboard
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -168,7 +183,6 @@ export default function PaddockGame({ onSwitchToRace, onNavigate, onExit }: Padd
         e.preventDefault();
         move(0, STEP);
       } else if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
-        // A is action, but allow movement with h? keep simple
         if (e.key.toLowerCase() === "a" && nearbyId) {
           e.preventDefault();
           handleAction();
@@ -186,28 +200,12 @@ export default function PaddockGame({ onSwitchToRace, onNavigate, onExit }: Padd
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [move, nearbyId, activePopup]);
+  }, [move, nearbyId, activePopup, handleAction]);
 
   // cleanup hold on unmount
   useEffect(() => () => {
     if (holdRef.current) window.clearInterval(holdRef.current);
   }, []);
-
-  const handleAction = () => {
-    if (activePopup) {
-      setActivePopup(null);
-      return;
-    }
-    if (nearbyId) {
-      if (nearbyId === "race") {
-        // langsung switch tanpa popup? tapi popup konfirmasi dulu
-        setActivePopup("race");
-      } else {
-        setActivePopup(nearbyId);
-      }
-    }
-  };
 
   const handlePopupAction = (id: PaddockObjectId) => {
     if (id === "race") {

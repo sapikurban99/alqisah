@@ -145,8 +145,8 @@ export default function GallerySection({ onNext }: GalleryProps) {
         <span className="material-symbols-outlined text-[#ffb1c3] text-[16px]">arrow_back_ios_new</span>
       </div>
 
-      {/* Grid — PRD: auto-fit minmax 150px gap 16 */}
-      <div className="gallery-grid">
+      {/* Grid — stitch: 2 kolom gap-3 */}
+      <div className="grid grid-cols-2 gap-3">
         {PHOTOS.map((photo, idx) => (
           <button
             key={photo.id}

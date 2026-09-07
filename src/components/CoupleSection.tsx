@@ -12,15 +12,15 @@ interface CoupleSectionProps {
 export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
   return (
     <div className="w-full flex flex-col bg-[#fbf9f5] pt-4 pb-6 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "24px" }}>
-      {/* Top badge */}
+      {/* Top Badge — stitch */}
       <div className="flex items-center justify-center">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#dbe1ff] text-[#00174b] rounded-lg shadow-[2px_2px_0px_#0051d5]">
           <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>videogame_asset</span>
-          <span className="font-rubik text-[10px] font-bold tracking-widest uppercase">{'STAGE 01 // ROSTER UNLOCKED'}</span>
+          <span className="font-rubik text-[10px] font-bold tracking-widest uppercase">STAGE 01 // ROSTER UNLOCKED</span>
         </div>
       </div>
 
-      {/* Title Bar */}
+      {/* Title Bar — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_8px_20px_rgba(173,43,88,0.08)] flex flex-col items-center text-center">
         <div className="flex items-center justify-center gap-2 mb-1 opacity-90">
           <span className="material-symbols-outlined text-[#ff6b97] text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
@@ -30,14 +30,14 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
           <span className="material-symbols-outlined text-[#ff6b97] text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
         </div>
         <h1 className="font-rubik text-[22px] font-extrabold uppercase tracking-wider text-[#0051d5]">PLAYER SELECT</h1>
-        <p className="font-rubik text-[10px] font-bold text-[#ad2b58] tracking-widest">{'// 2P CO-OP FOREVER MODE //'}</p>
+        <p className="font-rubik text-[10px] font-bold text-[#ad2b58] tracking-widest">{"// 2P CO-OP FOREVER MODE //"}</p>
         <div className="w-full mt-3 py-1.5 px-3 bg-[#f5f3ef] rounded-lg flex items-center justify-center gap-2 text-[#574145]">
           <span className="w-2 h-2 rounded-full bg-[#0051d5] animate-pulse" />
           <span className="font-rubik text-[10px] font-bold uppercase tracking-wide">Ready? Press Start to Join Quest</span>
         </div>
       </div>
 
-      {/* PLAYER 1 — GROOM */}
+      {/* PLAYER 1 — GROOM — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_6px_16px_rgba(0,81,213,0.08)]">
         <div className="flex items-center justify-between mb-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#316bf3] text-white rounded-lg shadow-[2px_2px_0px_#003ea8]">
@@ -179,7 +179,7 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
         </div>
       </div>
 
-      {/* Co-op Synergy */}
+      {/* Co-op Synergy — stitch */}
       <div className="bg-[#f5f3ef] rounded-xl p-3 shadow-[0_4px_12px_rgba(103,75,181,0.08)] flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-[#e8ddff] text-[#21005e] flex items-center justify-center shrink-0">
@@ -195,7 +195,7 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
         </div>
       </div>
 
-      {/* Holy Verse */}
+      {/* Holy Verse — stitch */}
       <div className="bg-white rounded-xl p-4 shadow-[0_8px_20px_rgba(173,43,88,0.06)]">
         <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#efeeea]">
           <div className="flex items-center gap-1.5 text-[#ad2b58]">
@@ -217,7 +217,7 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Actions — stitch primary/tertiary */}
       <div className="flex flex-col gap-3">
         <button
           onClick={() => {

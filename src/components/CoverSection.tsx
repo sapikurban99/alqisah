@@ -12,6 +12,7 @@ interface CoverSectionProps {
 export default function CoverSection({ onOpen, onPlayGame }: CoverSectionProps) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [isPlaying, setIsPlaying] = useState(() => audioManager.getIsPlaying());
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const t = new Date("2026-09-18T08:00:00+07:00").getTime();
@@ -29,93 +30,146 @@ export default function CoverSection({ onOpen, onPlayGame }: CoverSectionProps) 
     return () => clearInterval(id);
   }, []);
 
+  const toggleMusic = () => {
+    audioManager.playClick();
+    const p = audioManager.toggleMute();
+    setIsPlaying(p);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2200);
+  };
+
   const handleOpen = () => {
     audioManager.playClick();
     audioManager.startBgm();
     setIsPlaying(true);
+    if ("vibrate" in navigator) try { navigator.vibrate([40, 60, 40]); } catch {}
     onOpen();
   };
 
   return (
-    <div className="w-full h-auto flex flex-col bg-[#fbf9f5] select-none home-auto-height" style={{ height: "auto", minHeight: "auto" }}>
-      <div className="bg-[#ff6b97] px-4 py-3 flex items-center justify-between">
-        <span className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded bg-white shadow-[1px_1px_0px_#8c0c41]" />
-          <span className="font-rubik text-[11px] font-extrabold tracking-[0.12em] text-[#6e0030] uppercase">ROMANCE.EXE</span>
-        </span>
-        <button onClick={() => setIsPlaying(audioManager.toggleMute())} className="w-8 h-8 rounded-lg bg-[#316bf3] text-white grid place-items-center shadow-[2px_2px_0px_#003ea8]">
-          <span className="material-symbols-outlined text-[18px]">{isPlaying ? "music_note" : "music_off"}</span>
-        </button>
+    <div className="relative w-full h-auto flex flex-col bg-[#fbf9f5] select-none home-auto-height" style={{ height: "auto", minHeight: "auto" }}>
+      <div className="bg-[#ff6b97] px-4 py-3 flex items-center justify-between shadow-sm shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-[2px] bg-white opacity-90 inline-block shadow-[1px_1px_0px_#8c0c41]" />
+          <span className="font-rubik text-[11px] font-extrabold tracking-[0.12em] uppercase text-[#6e0030]">ROMANCE.EXE</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={toggleMusic} aria-label="Music" className="w-8 h-8 rounded-lg bg-[#316bf3] text-white grid place-items-center shadow-[2px_2px_0px_#003ea8] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+            <span className="material-symbols-outlined text-[18px]">{isPlaying ? "music_note" : "music_off"}</span>
+          </button>
+          <button onClick={() => audioManager.playClick()} aria-label="Settings" className="w-8 h-8 rounded-lg bg-[#316bf3] text-white grid place-items-center shadow-[2px_2px_0px_#003ea8] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+            <span className="material-symbols-outlined text-[18px]">settings</span>
+          </button>
+          <button onClick={() => audioManager.playClick()} aria-label="Menu" className="w-8 h-8 rounded-lg bg-[#316bf3] text-white grid place-items-center shadow-[2px_2px_0px_#003ea8] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+            <span className="material-symbols-outlined text-[18px]">menu</span>
+          </button>
+        </div>
       </div>
 
-      <div className="bg-[#f5f3ef] border-y border-[#efeeea] py-2 px-4 flex justify-between">
-        {["#ff6b97","#a88cfb","#ffb1c3","#674bb5","#ff6b97","#a88cfb","#ff6b97"].map((c,i)=>(
-          <span key={i} className="material-symbols-outlined text-[16px]" style={{ color:c, fontVariationSettings:"'FILL' 1"}}>favorite</span>
+      <div className="bg-[#f5f3ef] py-2 px-3 flex justify-around items-center overflow-hidden select-none">
+        {[
+          { c: "#ff6b97", s: 20 },
+          { c: "#a88cfb", s: 16 },
+          { c: "#ff6b97", s: 20 },
+          { c: "#674bb5", s: 16 },
+          { c: "#ff6b97", s: 20 },
+          { c: "#a88cfb", s: 16 },
+          { c: "#ffb1c3", s: 20 },
+        ].map((h, i) => (
+          <span key={i} className="material-symbols-outlined" style={{ color: h.c, fontSize: `${h.s}px`, fontVariationSettings: "'FILL' 1", lineHeight: 1 }}>favorite</span>
         ))}
       </div>
 
-      <div className="w-full bg-[#fbf9f5] flex flex-col gap-4" style={{ padding: "16px 20px" }}>
-        <div className="bg-[#f5f3ef] rounded-xl p-5 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-1.5 bg-[#ffd9e0] text-[#3f0019] px-3 py-1 rounded-full shadow-[2px_2px_0px_#ffb1c3]">
-            <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings:"'FILL' 1"}}>favorite</span>
+      <div className="p-5 flex flex-col items-center bg-white gap-4">
+        <div className="w-full bg-[#f5f3ef] rounded-xl p-4 flex flex-col items-center text-center shadow-inner">
+          <div className="inline-flex items-center gap-1.5 bg-[#ffd9e0] text-[#3f0019] px-3 py-1 rounded-full mb-2 shadow-[2px_2px_0px_#ffb1c3]">
+            <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
             <span className="font-rubik text-[10px] font-bold tracking-[0.08em] uppercase">SAVE THE DATE</span>
           </div>
-          <h1 className="font-rubik text-[32px] font-extrabold leading-none uppercase text-[#0051d5] mt-3">Aldi</h1>
-          <span className="font-rubik text-[13px] font-bold text-[#674bb5] lowercase -my-1">and</span>
-          <h1 className="font-rubik text-[32px] font-extrabold leading-none uppercase text-[#0051d5]">Qisty</h1>
-          <p className="font-rubik text-[14px] font-semibold text-[#574145] mt-3">Game to Forever</p>
-          <div className="mt-2 bg-[#e8ddff] text-[#21005e] font-rubik text-[11px] font-bold px-3 py-1 rounded-full">#ALQISAH</div>
-        </div>
-
-        <div className="bg-white rounded-xl p-3 shadow-[0_6px_16px_rgba(173,43,88,0.06)]">
-          <div className="bg-[#f5f3ef] rounded-xl h-[190px] flex items-center justify-center p-2">
-            <Image src="/wedding/sprite-car-transparent.png" alt="car" width={600} height={300} className="w-full h-full object-contain pixelated" priority />
+          <h1 className="font-rubik text-[28px] font-extrabold leading-[36px] tracking-[0.02em] uppercase text-[#0051d5] mt-1">Aldi</h1>
+          <span className="font-rubik text-[16px] font-semibold text-[#674bb5] lowercase -mt-1 -mb-1">and</span>
+          <h1 className="font-rubik text-[28px] font-extrabold leading-[36px] tracking-[0.02em] uppercase text-[#0051d5] mb-2">Qisty</h1>
+          <div className="flex flex-col items-center">
+            <p className="font-rubik text-[16px] font-semibold tracking-[0.04em] text-[#574145]">Game to Forever</p>
+            <div className="mt-1 inline-block bg-[#e8ddff] text-[#21005e] font-rubik text-[12px] font-semibold px-2 py-0.5 rounded"> #ALQISAH </div>
           </div>
         </div>
 
-        <div className="bg-[#dbe1ff] rounded-xl p-3 flex items-center justify-between shadow-[3px_3px_0px_#b4c5ff]">
+        <div className="relative w-full flex justify-center items-center">
+          <div className="absolute -top-3 left-4 animate-bounce">
+            <span className="material-symbols-outlined text-[#ffb1c3] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+          </div>
+          <div className="absolute -top-1 right-6 animate-pulse">
+            <span className="material-symbols-outlined text-[#a88cfb] text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+          </div>
+          <div className="w-full h-64 rounded-xl overflow-hidden shadow-[0_6px_0_0_#efeeea] relative flex items-center justify-center bg-[#efeeea]">
+            <Image src="/wedding/sprite-car-transparent.png" alt="car" width={600} height={400} className="w-full h-full object-cover pixelated" priority />
+          </div>
+        </div>
+
+        <div className="w-full bg-[#dbe1ff] text-[#00174b] rounded-xl p-3 mb-1 shadow-[3px_3px_0px_#b4c5ff] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0051d5] text-white grid place-items-center">
+            <div className="w-10 h-10 rounded-lg bg-[#0051d5] text-white flex items-center justify-center shadow-[1px_1px_0px_#003ea8]">
               <span className="material-symbols-outlined text-[20px]">calendar_month</span>
             </div>
-            <div>
-              <p className="font-rubik text-[13px] font-bold text-[#00174b]">Jumat, 18 September 2026</p>
-              <p className="font-jakarta text-xs text-[#003ea8]">Hotel Indies Style, Bandung</p>
+            <div className="flex flex-col text-left">
+              <span className="font-rubik text-[16px] font-semibold leading-tight text-[#00174b]">Jumat, 18 September 2026</span>
+              <span className="font-jakarta text-[12px] text-[#003ea8]">Hotel Indies Style, Bandung</span>
             </div>
           </div>
-          <span className="w-8 h-8 rounded-lg bg-white grid place-items-center text-[#0051d5]">
-            <span className="material-symbols-outlined">pin_drop</span>
-          </span>
+          <div className="w-6 h-6 rounded bg-white flex items-center justify-center text-[#0051d5]">
+            <span className="material-symbols-outlined text-[16px]">pin_drop</span>
+          </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <div className="flex justify-center gap-1.5 mb-3 text-[#574145]">
-            <span className="material-symbols-outlined text-[16px]">schedule</span>
-            <span className="font-rubik text-[10px] font-bold tracking-[0.12em] uppercase">LEVEL STARTS IN</span>
+        <div className="w-full flex flex-col items-center mb-1">
+          <div className="flex items-center gap-1 mb-2 text-[#574145]">
+            <span className="material-symbols-outlined text-[14px]">schedule</span>
+            <span className="font-rubik text-[10px] font-bold tracking-[0.08em] uppercase">LEVEL STARTS IN</span>
           </div>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-2 w-full">
             {[
-              { l:"DAYS", v:timeLeft.days },
-              { l:"HOURS", v:timeLeft.hours },
-              { l:"MINS", v:timeLeft.mins },
-              { l:"SECS", v:timeLeft.secs },
-            ].map(b=>(
-              <div key={b.l} className="bg-[#f5f3ef] rounded-xl py-3 flex flex-col items-center border border-[#efeeea]">
-                <span className="font-rubik text-[16px] font-extrabold text-[#ad2b58]">{String(b.v).padStart(2,"0")}</span>
-                <span className="font-rubik text-[9px] font-bold text-[#8a7175]">{b.l}</span>
+              { l: "DAYS", v: timeLeft.days, c: "text-[#ad2b58]" },
+              { l: "HOURS", v: timeLeft.hours, c: "text-[#674bb5]" },
+              { l: "MINS", v: timeLeft.mins, c: "text-[#0051d5]" },
+              { l: "SECS", v: timeLeft.secs, c: "text-[#ff6b97]" },
+            ].map((b) => (
+              <div key={b.l} className="flex flex-col items-center bg-[#efeeea] py-2 rounded-lg shadow-[2px_2px_0px_#dbdad6]">
+                <span className={`font-rubik text-[22px] font-bold leading-[28px] ${b.c}`}>{String(b.v).padStart(2, "0")}</span>
+                <span className="font-rubik text-[10px] font-bold tracking-[0.08em] text-[#574145] uppercase">{b.l}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <button onClick={handleOpen} className="w-full py-3.5 bg-[#ad2b58] text-white rounded-xl font-rubik text-[13px] font-bold uppercase tracking-[0.08em] shadow-[0_4px_0_#6e0030] active:translate-y-1 active:shadow-none flex items-center justify-center gap-2">
-          BUKA UNDANGAN <span className="material-symbols-outlined text-[18px]">play_arrow</span>
-        </button>
-        {onPlayGame && (
-          <button onClick={onPlayGame} className="w-full py-3.5 bg-[#e8ddff] text-[#21005e] rounded-xl font-rubik text-[13px] font-bold shadow-[0_4px_0_#cebdff] flex items-center justify-center gap-2 border border-[#cebdff]">
-            PLAY MINI GAME <span className="material-symbols-outlined">sports_esports</span>
+        <div className="w-full flex flex-col gap-3">
+          <button onClick={handleOpen} className="w-full py-3 px-4 bg-[#ad2b58] text-white font-rubik text-[14px] font-bold tracking-[0.05em] uppercase rounded-xl shadow-[4px_4px_0px_#6e0030] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#6e0030] transition-all flex items-center justify-center gap-2">
+            <span>BUKA UNDANGAN</span>
+            <span className="material-symbols-outlined text-[18px]">play_arrow</span>
           </button>
-        )}
+          {onPlayGame && (
+            <button onClick={() => { audioManager.playClick(); onPlayGame(); }} className="w-full py-3 px-4 bg-[#e8ddff] text-[#21005e] font-rubik text-[14px] font-bold tracking-wide rounded-xl shadow-[4px_4px_0px_#cebdff] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#cebdff] transition-all flex items-center justify-center gap-2">
+              <span>PLAY MINI GAME</span>
+              <span className="material-symbols-outlined text-[18px]">sports_esports</span>
+            </button>
+          )}
+        </div>
+
+        <div className="mt-2 flex items-center gap-1.5 text-[#0051d5] animate-pulse">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0051d5]" />
+          <span className="font-rubik text-[10px] font-bold tracking-[0.08em] uppercase">★ PRESS START TO JOIN PARTY ★</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0051d5]" />
+        </div>
+      </div>
+
+      <div className={`absolute bottom-20 left-1/2 -translate-x-1/2 w-[92%] max-w-[360px] bg-white border border-[#efeeea] rounded-xl p-3 shadow-[0_8px_24px_rgba(0,0,0,0.12)] flex items-center justify-between transition-all ${showToast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"}`}>
+        <span className="flex items-center gap-2 font-jakarta text-xs font-medium text-[#1b1c1a]">
+          <span className="material-symbols-outlined text-[#0051d5] text-[18px]">volume_up</span>
+          {isPlaying ? "Retro 8-bit theme active!" : "Musik dimatikan"}
+        </span>
+        <button onClick={() => setShowToast(false)} className="text-[#8a7175] p-1">
+          <span className="material-symbols-outlined text-[16px]">close</span>
+        </button>
       </div>
     </div>
   );
