@@ -72,9 +72,16 @@ export default function WeddingInvitation() {
   };
 
   return (
-    <div className="mobile-wrapper sm:my-6 sm:rounded-2xl">
-      {/* Inner device shell — retains 440 but now constrained by 480 wrapper */}
-      <div className="relative w-full flex-1 min-h-[100dvh] sm:min-h-[860px] sm:max-h-[860px] flex flex-col bg-white sm:rounded-2xl overflow-hidden">
+    <div className={`mobile-wrapper sm:my-6 sm:rounded-2xl ${mode === "selector" ? "home-mode" : ""}`} style={mode === "selector" ? { minHeight: "auto", height: "auto" } : undefined}>
+      {/* Inner shell — tinggi menyesuaikan konten saat Home, full saat undangan */}
+      <div
+        className={
+          mode === "selector"
+            ? "relative w-full h-auto flex flex-col bg-[#fbf9f5] sm:rounded-2xl overflow-hidden home-auto-height"
+            : "relative w-full flex-1 min-h-[100dvh] sm:min-h-[860px] sm:max-h-[860px] flex flex-col bg-white sm:rounded-2xl overflow-hidden"
+        }
+        style={mode === "selector" ? { minHeight: "auto", height: "auto" } : undefined}
+      >
         {/* GAME MODE — dark canvas inside pastel shell */}
         {mode === "game" && (
           <div className="relative w-full h-full flex flex-col bg-[#fbf9f5]">
@@ -109,13 +116,11 @@ export default function WeddingInvitation() {
 
         {/* INVITATION MODE */}
         {mode === "invitation" && (
-          <div className="relative w-full h-full flex flex-col bg-[#fbf9f5] main-content">
+          <div className="relative w-full h-full flex flex-col bg-[#fbf9f5]">
             <div
               key={currentSection}
-              className={`w-full flex-1 overflow-y-auto animate-section-in bg-[#fbf9f5] scrollbar-none main-content ${
-                currentSection !== "cover" ? "pb-24" : ""
-              }`}
-              style={{ scrollbarWidth: "none" }}
+              className="w-full flex-1 overflow-y-auto animate-section-in bg-[#fbf9f5] scrollbar-none main-content"
+              style={{ scrollbarWidth: "none", paddingBottom: "90px" }}
             >
               {renderInvitationSection()}
             </div>

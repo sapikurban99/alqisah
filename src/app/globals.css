@@ -196,9 +196,32 @@ img, svg {
   box-shadow: 0 -4px 16px rgba(173, 43, 88, 0.06);
 }
 
-/* PRD: Main content bottom padding agar tidak tertutup nav */
+/* Kontainer utama — ruang agar konten tidak tertutup bottom nav fixed */
 .main-content {
-  padding-bottom: 80px;
+  padding-bottom: 90px;
+  box-sizing: border-box;
+}
+
+/* Kontainer halaman — cegah teks menabrak batas kiri-kanan */
+.page-container {
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Avatar Player Select — cegah overflow keluar border */
+.couple-avatar-img {
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Home — hilangkan ruang putih kosong, tinggi menyesuaikan konten */
+.home-auto-height {
+  height: auto;
+  min-height: auto;
+}
+.mobile-wrapper.home-mode {
+  height: auto;
+  min-height: auto;
 }
 
 /* 8px rhythm helpers */

@@ -11,7 +11,7 @@ interface CoupleSectionProps {
 
 export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
   return (
-    <div className="w-full min-h-full flex flex-col bg-[#fbf9f5] px-4 pt-4 pb-6 gap-4 select-none">
+    <div className="w-full flex flex-col bg-[#fbf9f5] pt-4 pb-6 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "24px" }}>
       {/* Top badge */}
       <div className="flex items-center justify-center">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#dbe1ff] text-[#00174b] rounded-lg shadow-[2px_2px_0px_#0051d5]">
@@ -49,7 +49,7 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
 
         <div className="flex items-center gap-4 mb-3">
           <div className="relative shrink-0 w-24 h-24 rounded-xl bg-[#dbe1ff] flex items-center justify-center overflow-hidden shadow-[3px_3px_0px_#316bf3]">
-            <Image src="/wedding/sprite-groom-transparent.png" alt="Aldi Santoso" width={96} height={96} className="object-cover w-full h-full pixelated" />
+            <Image src="/wedding/sprite-groom-transparent.png" alt="Aldi Santoso" width={96} height={96} className="w-full h-full object-contain pixelated couple-avatar-img" style={{ maxWidth: "100%", objectFit: "contain" }} />
             <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-[#0051d5] text-white rounded text-[9px] font-rubik font-bold">P1</div>
           </div>
           <div className="flex flex-col min-w-0 flex-1">
@@ -120,7 +120,7 @@ export default function CoupleSection({ onNext, onRsvp }: CoupleSectionProps) {
 
         <div className="flex items-center gap-4 mb-3">
           <div className="relative shrink-0 w-24 h-24 rounded-xl bg-[#ffd9e0] flex items-center justify-center overflow-hidden shadow-[3px_3px_0px_#ff6b97]">
-            <Image src="/wedding/sprite-bride-transparent.png" alt="Qisti Fadilah" width={96} height={96} className="object-cover w-full h-full pixelated" />
+            <Image src="/wedding/sprite-bride-transparent.png" alt="Qisti Fadilah" width={96} height={96} className="w-full h-full object-contain pixelated couple-avatar-img" style={{ maxWidth: "100%", objectFit: "contain" }} />
             <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-[#ad2b58] text-white rounded text-[9px] font-rubik font-bold">P2</div>
           </div>
           <div className="flex flex-col min-w-0 flex-1">

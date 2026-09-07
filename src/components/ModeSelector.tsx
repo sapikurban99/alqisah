@@ -52,7 +52,7 @@ export default function ModeSelector({
   };
 
   return (
-    <div className="relative w-full min-h-full flex flex-col bg-white select-none">
+    <div className="relative w-full h-auto flex flex-col bg-[#fbf9f5] select-none home-auto-height" style={{ height: "auto", minHeight: "auto" }}>
       {/* Top Bar */}
       <div className="bg-[#ff6b97] px-4 py-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
@@ -79,8 +79,8 @@ export default function ModeSelector({
         ))}
       </div>
 
-      {/* Scrollable */}
-      <div className="flex-1 overflow-y-auto bg-[#fbf9f5] p-4 flex flex-col gap-4">
+      {/* Konten */}
+      <div className="w-full bg-[#fbf9f5] flex flex-col gap-4" style={{ padding: "16px 20px" }}>
         {/* Title Box */}
         <div className="bg-[#f5f3ef] rounded-xl p-5 flex flex-col items-center text-center shadow-sm">
           <div className="inline-flex items-center gap-1.5 bg-[#ffd9e0] text-[#3f0019] px-3 py-1 rounded-full shadow-[2px_2px_0px_#ffb1c3]">

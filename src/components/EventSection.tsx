@@ -41,7 +41,7 @@ export default function EventSection() {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col bg-[#fbf9f5] px-4 py-4 gap-4 select-none">
+    <div className="w-full flex flex-col bg-[#fbf9f5] py-4 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "16px" }}>
       {/* Quest header + heart garland */}
       <div className="bg-white p-4 rounded-xl shadow-[0_6px_20px_rgba(173,43,88,0.08)] flex flex-col gap-3">
         <div className="flex items-center justify-between opacity-80">

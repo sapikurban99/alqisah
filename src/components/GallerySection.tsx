@@ -77,7 +77,7 @@ export default function GallerySection({ onNext }: GalleryProps) {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col bg-[#fbf9f5] px-4 py-4 gap-4 select-none">
+    <div className="w-full flex flex-col bg-[#fbf9f5] py-4 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "16px" }}>
       {/* Header */}
       <div className="bg-white rounded-xl shadow-[0_4px_16px_rgba(173,43,88,0.08)] p-5 relative overflow-hidden">
         <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-[#ffd9e0]/30 blur-2xl pointer-events-none" />

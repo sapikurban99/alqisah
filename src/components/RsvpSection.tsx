@@ -67,7 +67,7 @@ export default function RsvpSection() {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col bg-[#fbf9f5] px-4 py-4 gap-4 select-none">
+    <div className="w-full flex flex-col bg-[#fbf9f5] py-4 gap-4 select-none" style={{ padding: "0 20px", paddingTop: "16px", paddingBottom: "16px" }}>
       {/* Heart Garland */}
       <div className="flex items-center justify-between px-4 py-2 bg-[#f5f3ef] rounded-xl shadow-sm">
         <span className="material-symbols-outlined text-[#ff6b97] text-[18px]">favorite</span>
