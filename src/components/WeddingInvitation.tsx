@@ -7,11 +7,13 @@ import CoupleSection from "./CoupleSection";
 import EventSection from "./EventSection";
 import GallerySection from "./GallerySection";
 import GameSection from "./GameSection";
+import PaddockGame from "./PaddockGame";
 import RsvpSection from "./RsvpSection";
 import { audioManager } from "@/utils/audio";
 
 type Mode = "selector" | "invitation" | "game";
 type InvitationSection = "cover" | "couple" | "event" | "gallery" | "rsvp";
+type GameSubMode = "paddock" | "race";
 
 interface NavItem {
   key: InvitationSection;
@@ -31,6 +33,7 @@ export default function WeddingInvitation() {
   const [mode, setMode] = useState<Mode>("selector");
   const [currentSection, setCurrentSection] =
     useState<InvitationSection>("cover");
+  const [gameSubMode, setGameSubMode] = useState<GameSubMode>("paddock");
 
   const handleSelectInvitation = () => {
     audioManager.playClick();
@@ -45,6 +48,7 @@ export default function WeddingInvitation() {
 
   const handleSelectGame = () => {
     audioManager.playClick();
+    setGameSubMode("paddock");
     setMode("game");
   };
 
@@ -82,27 +86,65 @@ export default function WeddingInvitation() {
         }
         style={mode === "selector" ? { minHeight: "auto", height: "auto" } : undefined}
       >
-        {/* GAME MODE — dark canvas inside pastel shell */}
+        {/* GAME MODE — Dual-Mode (Paddock ↔ Race) */}
         {mode === "game" && (
           <div className="relative w-full h-full flex flex-col bg-[#fbf9f5]">
-            <div className="absolute top-3 left-3 z-30">
+            {/* Toggle bar — Paddock / Race + Exit ke Undangan (fallback tamu sepuh) */}
+            <div className="shrink-0 w-full flex items-center justify-between px-2 py-2 bg-[#1a1a2e] border-b-[4px] border-black z-20">
               <button
                 onClick={() => {
                   audioManager.playClick();
                   setMode("invitation");
+                  setCurrentSection("couple");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white text-[#1b1c1a] rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] text-xs font-rubik font-bold border border-[#efeeea] active:scale-[0.98] transition-transform"
+                className="flex items-center gap-1 px-2.5 py-1.5 bg-white text-[#1a1a2e] border-[3px] border-black font-pixel text-[7px] shadow-[3px_3px_0_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
               >
-                <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-                <span>UNDANGAN</span>
+                <span className="material-symbols-outlined text-[14px]">arrow_back</span> UNDANGAN
               </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => {
+                    audioManager.playClick();
+                    setGameSubMode("paddock");
+                  }}
+                  className={`px-2.5 py-1.5 border-[3px] border-black font-pixel text-[7px] shadow-[3px_3px_0_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+                    gameSubMode === "paddock" ? "bg-[#FFD500] text-black" : "bg-white text-[#1a1a2e]"
+                  }`}
+                >
+                  PADDOCK
+                </button>
+                <button
+                  onClick={() => {
+                    audioManager.playClick();
+                    setGameSubMode("race");
+                  }}
+                  className={`px-2.5 py-1.5 border-[3px] border-black font-pixel text-[7px] shadow-[3px_3px_0_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+                    gameSubMode === "race" ? "bg-[#E10600] text-white" : "bg-white text-[#1a1a2e]"
+                  }`}
+                >
+                  RACE
+                </button>
+              </div>
             </div>
-            <GameSection
-              onFinished={() => {
-                setMode("invitation");
-                setCurrentSection("rsvp");
-              }}
-            />
+
+            <div className="flex-1 min-h-0 relative">
+              {gameSubMode === "paddock" ? (
+                <PaddockGame
+                  onSwitchToRace={() => {
+                    audioManager.playClick();
+                    setGameSubMode("race");
+                  }}
+                  onNavigate={(sec) => navigateTo(sec)}
+                />
+              ) : (
+                <GameSection
+                  onFinished={() => {
+                    setMode("invitation");
+                    setCurrentSection("rsvp");
+                  }}
+                />
+              )}
+            </div>
           </div>
         )}
 
