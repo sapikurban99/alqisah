@@ -664,10 +664,10 @@ export default function GameSection({ onFinished }: GameSectionProps) {
           </div>
         )}
 
-        {/* Start Screen */}
+        {/* Start Screen — samakan tema retro dengan checkpoint */}
         {gameState === "start" && (
           <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center z-30 px-5 py-4 overflow-y-auto">
-            <div className="brut-card-yellow w-full max-w-[320px] p-5">
+            <div className="brut-card-yellow modal-content checkpoint-card w-full max-w-[320px] box-border">
               <div className="relative mx-auto mb-3 w-56 h-28">
                 <Image
                   src="/wedding/sprite-car-transparent.png"
@@ -710,11 +710,11 @@ export default function GameSection({ onFinished }: GameSectionProps) {
           </div>
         )}
 
-        {/* Checkpoint Popup */}
+        {/* Checkpoint Popup — dipakai untuk CP1, CP2, CP3 */}
         {gameState === "checkpoint" && activeCheckpoint && (
           <div className="absolute inset-0 bg-black/75 flex items-center justify-center z-40 px-5 py-4">
-            <div className="retro-card w-full max-w-[320px] max-h-full overflow-y-auto bg-[#FFD500]">
-              <div className="px-5 pt-5 pb-3 text-center border-b-[4px] border-black">
+            <div className="retro-card checkpoint-card modal-content w-full max-w-[320px] max-h-[85vh] overflow-y-auto bg-[#FFD500]">
+              <div className="px-5 pt-5 pb-3 text-center border-b-[4px] border-[#1a1a2e]">
                 <p className="text-3xl mb-1">{activeCheckpoint.icon}</p>
                 <p className="font-pixel text-[8px] tracking-widest bg-black text-[#FFD500] inline-block px-3 py-1 mb-2">
                   CHECKPOINT {activeCheckpoint.id} ✓
@@ -727,17 +727,17 @@ export default function GameSection({ onFinished }: GameSectionProps) {
                 </p>
               </div>
 
-              <div className="px-5 py-4 bg-white border-b-[4px] border-black">
-                <div className="flex flex-col gap-2">
+              <div className="px-5 py-4 bg-white border-b-[4px] border-[#1a1a2e] w-full box-border">
+                <div className="flex flex-col gap-2 w-full">
                   {activeCheckpoint.details.map((detail, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-start gap-3 py-1 border-b-2 border-black/10 last:border-0"
+                      className="retro-detail-row"
                     >
-                      <span className="font-pixel text-[7px] pt-1 shrink-0 leading-4">
+                      <span className="font-pixel text-[7px] leading-4 w-full">
                         {detail.label.toUpperCase()}
                       </span>
-                      <span className="font-vt text-[17px] leading-tight text-right break-words">
+                      <span className="font-vt text-[17px] leading-tight w-full break-words">
                         {detail.value}
                       </span>
                     </div>
@@ -745,20 +745,20 @@ export default function GameSection({ onFinished }: GameSectionProps) {
                 </div>
               </div>
 
-              <div className="px-5 py-4 flex flex-col gap-2.5">
+              <div className="px-5 py-4 flex flex-col w-full box-border">
                 {activeCheckpoint.mapUrl && (
                   <button
                     onClick={() =>
                       window.open(activeCheckpoint.mapUrl, "_blank")
                     }
-                    className="retro-btn bg-black text-white w-full min-h-[48px] py-3 cursor-pointer"
+                    className="retro-btn bg-black text-white w-full min-h-[48px] py-3 cursor-pointer font-pixel text-[9px]"
                   >
                     📍 BUKA MAPS
                   </button>
                 )}
                 <button
                   onClick={continueFromCheckpoint}
-                  className="retro-btn bg-[#E10600] text-white w-full min-h-[48px] py-3 cursor-pointer"
+                  className="retro-btn bg-[#E10600] text-white w-full min-h-[48px] py-3 cursor-pointer font-pixel text-[9px]"
                 >
                   LANJUT GAS →
                 </button>
@@ -767,10 +767,10 @@ export default function GameSection({ onFinished }: GameSectionProps) {
           </div>
         )}
 
-        {/* Victory Screen — Victory Lap Complete + podium retained */}
+        {/* Victory Screen — samakan tema retro dengan checkpoint */}
         {gameState === "end" && (
           <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center text-center z-30 px-5 py-4 overflow-y-auto">
-            <div className="retro-card w-full max-w-[320px] p-5">
+            <div className="retro-card modal-content checkpoint-card w-full max-w-[320px] box-border">
               <div className="relative mx-auto mb-2 w-48 h-24">
                 <Image
                   src="/wedding/f1-podium.png"

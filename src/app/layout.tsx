@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata, Viewport } from "next";
-import { Rubik, Plus_Jakarta_Sans } from "next/font/google";
+import { Rubik, Plus_Jakarta_Sans, Press_Start_2P, VT323 } from "next/font/google";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -13,6 +13,18 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const pressStart = Press_Start_2P({
+  variable: "--font-press-start",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
+const vt323 = VT323({
+  variable: "--font-vt323",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${rubik.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${rubik.variable} ${jakarta.variable} ${pressStart.variable} ${vt323.variable} h-full antialiased`}
     >
       <head>
         <link

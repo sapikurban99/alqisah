@@ -116,10 +116,10 @@ img, svg {
 /* Font helpers */
 .font-rubik { font-family: var(--font-rubik), Rubik, sans-serif; }
 .font-jakarta { font-family: var(--font-jakarta), "Plus Jakarta Sans", sans-serif; }
-/* legacy aliases (GameSection) */
+/* Retro aliases (GameSection) — Press Start 2P untuk header, VT323 untuk isi */
 .font-display { font-family: var(--font-rubik), sans-serif; }
-.font-pixel { font-family: var(--font-rubik), sans-serif; }
-.font-vt { font-family: var(--font-jakarta), sans-serif; }
+.font-pixel { font-family: var(--font-press-start), "Press Start 2P", monospace; }
+.font-vt { font-family: var(--font-vt323), "VT323", monospace; }
 
 .pixelated {
   image-rendering: pixelated;
@@ -224,6 +224,103 @@ img, svg {
   min-height: auto;
 }
 
+/* === Global Retro Card Style untuk semua modal popup game (Checkpoint 1/2/3, Victory/Finish, Start) === */
+.retro-card,
+.modal-content,
+.checkpoint-card,
+.brut-card,
+.brut-card-yellow,
+.brut-card-red {
+  border: 4px solid #1a1a2e;
+  box-shadow: 8px 8px 0px rgba(26, 26, 46, 1);
+  border-radius: 0px;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 320px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Pastikan pembungkus retro tidak melebihi lebar popup */
+.retro-card *,
+.modal-content *,
+.checkpoint-card * {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* === Fix Text Overflow — daftar detail alamat/tanggal/waktu === */
+.retro-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 6px 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+.retro-detail-row:last-child {
+  border-bottom: none;
+}
+.retro-detail-row span,
+.retro-detail-row p,
+.retro-detail-row div {
+  word-wrap: break-word;
+  white-space: normal;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+@media (min-width: 480px) {
+  .retro-detail-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* Global overflow guard untuk semua teks di dalam modal retro */
+.retro-card .font-pixel,
+.retro-card .font-vt,
+.modal-content .font-pixel,
+.modal-content .font-vt,
+.checkpoint-card .font-pixel,
+.checkpoint-card .font-vt {
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* === Retro Button Style — arcade === */
+.retro-btn {
+  border: 4px solid #1a1a2e;
+  box-shadow: 4px 4px 0px #1a1a2e;
+  border-radius: 0px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  word-wrap: break-word;
+  white-space: normal;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.retro-btn:last-child {
+  margin-bottom: 0;
+}
+.retro-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
 /* 8px rhythm helpers */
 .p-window-frame-padding { padding: 1.25rem; } /* 20px = 8*2 +4 */
 
@@ -239,7 +336,7 @@ img, svg {
   100% { transform: translateX(100%); }
 }
 
-/* Legacy brut — kept only for GameSection fallback, not used in pastel */
-.brut-card { background: #fff; border: 4px solid #1b1c1a; box-shadow: 6px 6px 0 #1b1c1a; }
-.brut-card-red { background: var(--primary); border: 4px solid #1b1c1a; box-shadow: 6px 6px 0 #1b1c1a; color: #fff; }
+/* Legacy brut — diselaraskan ke Global Retro Card Style */
+.brut-card { background: #fff; border: 4px solid #1a1a2e; box-shadow: 8px 8px 0px rgba(26,26,46,1); border-radius: 0px; padding: 20px; box-sizing: border-box; }
+.brut-card-red { background: var(--primary); border: 4px solid #1a1a2e; box-shadow: 8px 8px 0px rgba(26,26,46,1); border-radius: 0px; padding: 20px; box-sizing: border-box; color: #fff; }
 .checker-sm { background: repeating-conic-gradient(#1b1c1a 0% 25%, #fff 0% 50%) 0 0 / 12px 12px; }
